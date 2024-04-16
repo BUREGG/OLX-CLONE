@@ -15,6 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 Route::middleware("auth")->group(function(){
     Route::view('/', "welcome")->name("home");
+    Route::view('/chat', "chat")->name("chat");
+    Route::view('/favorite', "favorite")->name("favorite");
+    Route::view('/myaccount', "myaccount")->name("myaccount");
+
+
    // Route::view('/chat'
 
 });
@@ -29,7 +34,7 @@ Route::middleware("auth")->group(function(){
 // Route::get('/chat', function () {
 //     return view('chat');
 // });
-Route::get('chat', [AuthController::class, "chat"])->name('chat');
+//Route::get('chat', [AuthController::class, "chat"])->name('chat');
 
 Route::get('login', [AuthController::class, "login"])->name('login');
 Route::post('login', [AuthController::class, "loginPost"])->name('login.post');

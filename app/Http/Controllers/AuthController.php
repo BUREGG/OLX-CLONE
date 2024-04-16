@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Session as FacadesSession;
 
 class AuthController extends Controller
 {
+    // public function favorite(){
+    //     return view('favorite');
+    // }
     public function login(){
         return view('login');
     }
