@@ -19,9 +19,10 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-            $table->integer('phone_number');
-            $table->date('register_date');
-            
+            $table->integer('phone_number')->default('0');
+            $table->timestamp('register_date')->useCurrent();    
+           
+       
         });
     }
 
