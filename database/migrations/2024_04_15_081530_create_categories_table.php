@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
-            $table->integer('parent_id');
+            $table->integer('parent_id')->nullable();
         });
     }
 

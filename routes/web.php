@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GetCategoryController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\AllproductController;
+use App\Http\Controllers\GeoCodeController;
 use App\Http\Controllers\PermissionController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,17 +18,26 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::middleware("auth")->group(function(){
-    Route::view('/', "welcome")->name("home");
+
+Route::middleware("auth")->group(function () {
     Route::view('/chat', "chat")->name("chat");
-    Route::view('/favorite', "favorite")->name("favorite");
+   Route::view('/favorite', "favorite")->name("favorite");
+    
     Route::view('/myaccount', "myaccount")->name("myaccount");
-
-
-   
+    Route::view('/addproduct', "addproduct")->name("addproduct");
+    Route::get('/myaccount', [ProductController::class, "index"])->name("index");
 
 });
-Route::group(['middleware' => ['role:super-admin|admin']], function() {
+Route::post('/addproduct', [ProductController::class, "store"])->name("add");
+Route::get('/', [GetCategoryController::class, 'getCategory'])->name("home");
+Route::get('/product',[AllProductController::class, 'index'])->name('product.index');
+Route::get('/test', [GeoCodeController::class, 'reverseGeocode'])->name('geocode');
+
+
+
+
+
+Route::group(['middleware' => ['role:super-admin|admin']], function () {
 
     Route::resource('permissions', App\Http\Controllers\PermissionController::class);
     Route::get('permissions/{permissionId}/delete', [App\Http\Controllers\PermissionController::class, 'destroy']);
@@ -36,11 +49,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
 
     Route::resource('users', App\Http\Controllers\UserController::class);
     Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
-
 });
-//Route::resource('permission', [PermissionController::class]);
-
-
 
 Route::get('login', [AuthController::class, "login"])->name('login');
 Route::post('login', [AuthController::class, "loginPost"])->name('login.post');
@@ -49,7 +58,7 @@ Route::get('register', [AuthController::class, "register"])->name('register');
 Route::post('register', [AuthController::class, "registerPost"])->name('register.post');
 
 
-Route::group(['middleware' => ['auth']], function() {
-   
+Route::group(['middleware' => ['auth']], function () {
+
     Route::get('/logout',  [AuthController::class, "logout"])->name('logout.logout');
- });
+});

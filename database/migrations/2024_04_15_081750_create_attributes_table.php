@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('attribute_name');
             $table->string('attribute_value');
-            $table->foreignId('products_id')->constrained()->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreignId('product_id')->constrained()->onUpdate('CASCADE')->onDelete('CASCADE');
           // $table->foreignId('products_users_id')->constrained()->onUpdate('CASCADE')->onDelete('CASCADE');
            //$table->foreignId('products_categories_id')->constrained()->onUpdate('CASCADE')->onDelete('CASCADE');
         });

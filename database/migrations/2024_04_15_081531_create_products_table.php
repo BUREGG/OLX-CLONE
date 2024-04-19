@@ -16,12 +16,15 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->integer('price');
-            $table->string('location');
-            $table->date('date');
-            $table->string('address');
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
+
+           // $table->date('date')->nullable();
+            $table->string('address')->nullable();
             $table->timestamps();
-           $table->foreignId('users_id')->constrained()->onUpdate('CASCADE')->onDelete('CASCADE');
-           $table->foreignId('categories_id')->constrained()->onUpdate('CASCADE')->onDelete('CASCADE');
+         //   $table->string('image')->nullable();
+            $table->foreignId('user_id')->constrained()->onUpdate('CASCADE')->onDelete('CASCADE')->nullable();
+            $table->foreignId('category_id')->constrained()->onUpdate('CASCADE')->onDelete('CASCADE')->nullable();
 
         });
     }

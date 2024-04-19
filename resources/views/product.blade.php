@@ -11,13 +11,8 @@
         </tr>
     </thead>
     <tbody>
-        <?php
-        //dump($product)
-        ?>
-        
+       
         @foreach ($product as $item)
-        @if($item->user_id == Auth::user()->id)
-        {{-- foreach(auth()->user()->products as $product ) --}}
         <tr>
                 <td>{{$item->id}}</td>
                 <td>{{$item->name}}</td>
@@ -32,7 +27,6 @@
                     <img src="{{ asset('storage/images/'. $image->image) }}" width="170px" height="170px" alt="Zdjecie">
                 @endforeach
             </td>
-            @endif
         @endforeach
     </tbody>
 </table>

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('date');
             $table->integer('sender_id');
             $table->integer('receiver_id');
-            $table->foreignId('users_id')->constrained()->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreignId('user_id')->constrained()->onUpdate('CASCADE')->onDelete('CASCADE');
 
         });
     }
