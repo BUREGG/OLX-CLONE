@@ -25,34 +25,45 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ url('/test') }}">test</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ url('/favorite') }}">Ulubione</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('chat') }}">Wiadomosci</a>
-                    </li>
-                    <li class="nav-item">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('myaccount') }}">Moje konto</a>
+                        <a class="nav-link" aria-current="page" href="{{ url('/test') }}">test</a>
                     </li>
                     @if(auth()->check())
+
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('addproduct') }}">Dodaj ogłoszenie</a>
+                        <a class="nav-link {{ request()->is('favorite') ? 'fw-bold' : '' }}" aria-current="page" href="{{ url('/favorite') }}">Ulubione</a>
                     </li>
                     @endif
+                    @if(auth()->check())
+
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}">Zaloguj</a>
+                        <a class="nav-link {{ request()->is('chat') ? 'fw-bold' : '' }}" href="{{ url('chat') }}">Wiadomosci</a>
                     </li>
+                    @endif
+                    @if(auth()->check())
+
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('myaccount') ? 'fw-bold' : '' }}" href="{{ url('myaccount') }}">Moje konto</a>
+                    </li>
+                    @endif
                     @if(auth()->check())
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('logout.logout') }}">Wyloguj</a>
+                        <a class="nav-link {{ request()->is('addproduct') ? 'fw-bold' : '' }}" href="{{ url('addproduct') }}">Dodaj ogłoszenie</a>
+                    </li>
+                    @endif
+                    @if(!auth()->check())
+
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('login') ? 'fw-bold' : '' }}" href="{{ route('login') }}">Zaloguj</a>
+                    </li>
+                    @endif
+                    @if(auth()->check())
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('logout') ? 'fw-bold' : '' }}" href="{{ route('logout') }}">Wyloguj</a>
                     </li>
                     @endif
                     @role ('super-admin')
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page"
+                        <a class="nav-link {{ request()->is('permissions') ? 'fw-bold' : '' }}" aria-current="page"
                             href="{{ url('/permissions') }}">Panel admina</a>
                     </li>
                      @endrole
@@ -73,15 +84,7 @@
     </nav>
 
     @yield('content')
-    {{-- <strong>Database Connected: </strong>
-    <?php
-    try {
-        \DB::connection()->getPDO();
-        echo \DB::connection()->getDatabaseName();
-    } catch (\Exception $e) {
-        echo 'None';
-    }
-    ?> --}}
+  
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>

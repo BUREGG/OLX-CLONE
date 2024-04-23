@@ -6,11 +6,11 @@
         @foreach ($categories as $category)
             <div class="category">
                 <a style="margin-top:5px" class="list-group-item list-group-item-action" data-toggle="list"
-                    href="{{ $category->name }}" role="tab">{{ $category->name }}</a>
+                    href="{{ url('/category/'.$category->id) }}" role="tab">{{ $category->name }}</a>
                 <ul class="subcategory">
                     @foreach ($category->children as $child)
                         <a style="margin-top:5px" class="list-group-item list-group-item-action" data-toggle="list"
-                            href="{{ $child->name }}" role="tab">{{ $child->name }}</a>
+                            href="{{ url('/category/'.$child->id) }}" role="tab">{{ $child->name }}</a>
                     @endforeach
                 </ul>
             </div>

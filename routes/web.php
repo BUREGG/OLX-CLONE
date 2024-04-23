@@ -4,8 +4,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GetCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AllproductController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\GeoCodeController;
 use App\Http\Controllers\PermissionController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,17 +23,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware("auth")->group(function () {
     Route::view('/chat', "chat")->name("chat");
-   Route::view('/favorite', "favorite")->name("favorite");
-    
+    Route::view('/favorite', "favorite")->name("favorite");
+
     Route::view('/myaccount', "myaccount")->name("myaccount");
     Route::view('/addproduct', "addproduct")->name("addproduct");
     Route::get('/myaccount', [ProductController::class, "index"])->name("index");
-
 });
-Route::post('/addproduct', [ProductController::class, "store"])->name("add");
-Route::get('/', [GetCategoryController::class, 'getCategory'])->name("home");
-Route::get('/product',[AllProductController::class, 'index'])->name('product.index');
+Route::post('/addproduct', [ProductController::class, "store"])->name("addproduct");
+Route::get('/', [CategoryController::class, 'getCategory'])->name("homepage");
+Route::get('/product', [ProductController::class, 'DisplayAllProduct'])->name('product.display');
+Route::get('/productdetails/{id}',[ProductController::class, 'productDetails'])->name('productdetails');
 Route::get('/test', [GeoCodeController::class, 'reverseGeocode'])->name('geocode');
+Route::get('category/{id}',[ProductController::class, 'category'])->name('category');
 
 
 
@@ -60,5 +63,5 @@ Route::post('register', [AuthController::class, "registerPost"])->name('register
 
 Route::group(['middleware' => ['auth']], function () {
 
-    Route::get('/logout',  [AuthController::class, "logout"])->name('logout.logout');
+    Route::get('/logout',  [AuthController::class, "logout"])->name('logout');
 });

@@ -7,15 +7,13 @@ use Illuminate\Http\Request;
 
 class GeoCodeController extends Controller
 {
-    public function reverseGeocode()
+    public function reverseGeocode(Product $product)
     {
-        $firstProduct = Product::select('latitude', 'longitude')->first(); // Pobierz pierwszy rekord z kolumnami latitude i longitude
+   // dd($products);
+        
+            $latitude = $product->latitude; 
+            $longitude = $product->longitude; 
     
-        if ($firstProduct) { // Upewnij się, że rekord istnieje
-            $latitude = $firstProduct->latitude; // Pobierz wartość latitude z pierwszego rekordu
-            $longitude = $firstProduct->longitude; // Pobierz wartość longitude z pierwszego rekordu
-    
-            // Tworzymy URL zapytania do usługi Nominatim
             $url = sprintf(
                 'https://nominatim.openstreetmap.org/reverse?lat=%s&lon=%s&format=json',
                 $latitude,
@@ -32,23 +30,28 @@ class GeoCodeController extends Controller
 $response = file_get_contents($url, false, $context);
     
             // Parsujemy odpowiedź JSON
-            $data = json_decode($response);
+            $location = json_decode($response);
+
+           
+            $product->update([
+                ''
+            ]);
     
             // Sprawdzamy, czy udało się odczytać nazwę miejscowości
-            if (isset($data->address->city)) {
+            if (isset($location->address->city)) {
                 // Zwracamy nazwę miejscowości
-                return $data->address->city;
-            } elseif (isset($data->address->town)) {
+                return $location->address->city;
+            } elseif (isset($location->address->town)) {
                 // Alternatywnie, jeśli nazwa miejscowości nie jest dostępna, zwracamy nazwę miejscowości alternatywnej
-                return $data->address->town;
+                return $location->address->town;
             } else {
                 // Jeśli nie można znaleźć nazwy miejscowości, zwracamy pusty string
                 return '';
             }
-        } else {
+        
             // Jeśli nie ma żadnych rekordów w tabeli Product, zwracamy pusty string
             return '';
-        }
+        
     }
     
 }

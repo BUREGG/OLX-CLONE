@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -9,27 +10,37 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function DisplayAllProduct()
+    {
+        $product = Product::all();
+        $product->load('images');
+        return view('product', ['product' => $product]);
+
+    }
+
+    public function category($id)
+    {
+        $category = Category::where('id', $id)->firstOrFail();
+        $category->load('products');
+
+        return view('category', ['category' => $category]);
+    }
+
     public function index()
     {
         $product = Product::all();
-        return view('myaccount', ['product' => $product]);
+        $product->load('images');
+        return view('myaccount', ['product' => $product],);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function productDetails($id)
     {
-        //
+        $product = Product::where('id', $id)->firstOrFail();
+        $product->load('images');
+        return view('productdetails',['product' => $product]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(Request $request, GeoCodeController $geoCodeController)
     {
 
         $request->validate([
@@ -48,8 +59,11 @@ class ProductController extends Controller
         $product->user_id = auth()->id();
         $product->latitude = $request->latitude;
         $product->longitude = $request->longitude;
-
+        
+        $product->address = $geoCodeController->reverseGeocode($product);
         $product->save();
+
+
         $image = new Image();
 
         if ($request->hasFile('image')) {
@@ -64,38 +78,26 @@ class ProductController extends Controller
         //dd($product);
         return redirect('myaccount');
     }
-   
 
 
-    /**
-     * Display the specified resource.
-     */
+
+
     public function show(string $id)
     {
-        //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(string $id)
     {
-        //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, string $id)
     {
-        //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(string $id)
     {
-        //
     }
 }

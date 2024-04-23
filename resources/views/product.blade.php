@@ -3,30 +3,29 @@
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th> ID </th>
             <th> Tytuł </th>
-            <th> Opis </th>
             <th> Cena </th>
             <th> Zdjecie </th>
+            
         </tr>
     </thead>
     <tbody>
-       
+      <?php
+      $product=$product->reverse();
+      ?>
         @foreach ($product as $item)
         <tr>
-                <td>{{$item->id}}</td>
+                    <tr onclick="window.location='{{ url('/productdetails/'.$item->id) }}';" style="cursor:pointer;">
                 <td>{{$item->name}}</td>
-                <td>{{$item->description}}</td>
                 <td>{{$item->price}}</td>
                 <td>
-                @php
-                    $images = DB::table('images')->where('product_id', $item->id)->get();
-                @endphp
+          
     
-                @foreach ($images as $image)
+                @foreach ($item->images as $image)
                     <img src="{{ asset('storage/images/'. $image->image) }}" width="170px" height="170px" alt="Zdjecie">
                 @endforeach
             </td>
+            <td style="vertical-align: bottom;">Dodano: {{$item->created_at->format('Y-m-d H:i')}}<td>
         @endforeach
     </tbody>
 </table>

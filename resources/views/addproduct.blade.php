@@ -1,10 +1,9 @@
 @extends('layouts.app')
 @section('content')
-    <!-- Leaflet.js -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-    <!-- Leaflet.markercluster -->
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
     <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
@@ -15,7 +14,7 @@
                 <div class="card">
                     <div class="card-header">Dodaj ogłoszenie</div>
                     <div class="card-body">
-                        <form action="{{ route('add') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('addproduct') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3">
                                 <label for="name" class="form-label">Tytuł</label>
@@ -52,7 +51,6 @@
                                 <input type="hidden" name="latitude" id="latitude">
                                 <input type="hidden" name="longitude" id="longitude">
                             </div>
-                            <!-- Pozostałe pola formularza... -->
                             <script>
                                 var map = L.map('map').setView([51.7592, 19.4554], 13);
 
@@ -72,7 +70,6 @@
                                 });
                             </script>
                             <script>
-                                // Funkcja, która ustawia marker na aktualnej lokalizacji użytkownika
                                 function setMarkerToCurrentLocation() {
                                     if ("geolocation" in navigator) {
                                         navigator.geolocation.getCurrentPosition(function(position) {
@@ -89,16 +86,17 @@
                                     }
                                 }
                             </script>
-<div class="mb-3">
-    <button type="button" class="btn btn-primary" onclick="setMarkerToCurrentLocation()">Ustaw na aktualną lokalizację</button>
-</div>
+                            <div class="mb-3">
+                                <button type="button" class="btn btn-primary" onclick="setMarkerToCurrentLocation()">Ustaw
+                                    na aktualną lokalizację</button>
+                            </div>
                             <div class="mb-3">
                                 <label for="image" class="form-label">Zdjęcie</label>
                                 <input type="file" accept=".jpg, .jpeg, .png" class="form-control" id="image"
                                     name="image">
                             </div>
                             <button type="submit" class="btn btn-primary">Dodaj ogłoszenie</button>
-                          
+
                         </form>
                     </div>
                 </div>

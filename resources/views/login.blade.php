@@ -4,10 +4,10 @@
 
 <style>
 .spacer {
-    height: 200px; /* Możesz dostosować wysokość przestrzeni według własnych preferencji */
+    height: 200px;
 }
 .spacer2 {
-    height: 20px; /* Możesz dostosować wysokość przestrzeni według własnych preferencji */
+    height: 20px;
 }
 
     </style>

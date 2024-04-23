@@ -4,7 +4,7 @@
 
 <style>
 .spacer {
-    height: 200px; /* Możesz dostosować wysokość przestrzeni według własnych preferencji */
+    height: 200px;
 }
 
 
