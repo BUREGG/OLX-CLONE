@@ -51,10 +51,9 @@ class UserController extends Controller
                 'min:8',
                 'max:20'
             ],
-            'roles.*' => [
-                'required',
-                Rule::exists('roles', 'name')
-            ],
+            'roles' => [
+                'required'
+            ]
         ]);
 
         $user = User::create([
