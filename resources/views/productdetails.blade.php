@@ -39,7 +39,11 @@
         <h2>Cena: {{$product->price}}</h2>
         <p>Opis produktu: {{$product->description}}</p>
         <p>Lokalizacja: {{$product->address}}</p>
-        <p>Kontakt: 123-456-789</a></p>
+        @if(auth()->check())
+        <p>Kontakt: {{$product->user->phone_number}}</a></p>
+        @else
+        <p>Kontakt: Zaloguj się, aby odsłonić numer</p>
+        @endif
       </div>
     </div>
 @endsection

@@ -6,9 +6,12 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AllproductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\GeoCodeController;
+use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\PermissionController;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,15 +46,15 @@ Route::get('category/{id}',[ProductController::class, 'category'])->name('catego
 Route::group(['middleware' => ['role:super-admin|admin']], function () {
 
     Route::resource('permissions', App\Http\Controllers\PermissionController::class);
-    Route::get('permissions/{permissionId}/delete', [App\Http\Controllers\PermissionController::class, 'destroy']);
+   // Route::get('permissions/{permission}/delete', [App\Http\Controllers\PermissionController::class, 'destroy']);
 
     Route::resource('roles', App\Http\Controllers\RoleController::class);
-    Route::get('roles/{roleId}/delete', [App\Http\Controllers\RoleController::class, 'destroy']);
+ //   Route::get('roles/{roleId}/delete', [App\Http\Controllers\RoleController::class, 'destroy']);
     Route::get('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'addPermissionToRole']);
     Route::put('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'givePermissionToRole']);
 
     Route::resource('users', App\Http\Controllers\UserController::class);
-    Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
+    //Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
 });
 
 Route::get('login', [AuthController::class, "login"])->name('login');
@@ -65,3 +68,26 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/logout',  [AuthController::class, "logout"])->name('logout');
 });
+
+Route::get('/auth/redirect',[GoogleAuthController::class, 'redirect'])->name('google.auth');
+Route::get('/auth/callback',[GoogleAuthController::class, 'callback'])->name('google.back');
+
+// Route::get('/auth/{$provider}/redirect', function () {
+//     return Socialite::driver('google')->redirect();
+// });
+// Route::get('/auth/$provider/callback', function () {
+//     $SocialUser = Socialite::driver('google')->user();
+ 
+//     $user = User::updateOrCreate([
+//         'github_id' => $githubUser->id,
+//     ], [
+//         'name' => $githubUser->name,
+//         'email' => $githubUser->email,
+//         'github_token' => $githubUser->token,
+//         'github_refresh_token' => $githubUser->refreshToken,
+//     ]);
+ 
+//     Auth::login($user);
+ 
+//     return redirect('/dashboard');
+// });

@@ -44,6 +44,7 @@ class AuthController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
+        $user->phone_number = $request->phone_number;
         if($user->save()){
             return redirect(route('login'))->with("success", "user created succesfully");
         }

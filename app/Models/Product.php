@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Product extends Model
 {
     // protected $table = 'products';
-  protected $fillable = ['name','description','price','image', 'location'];
+    protected $fillable = ['name', 'description', 'price', 'image', 'location'];
     use HasFactory;
     public function category()
     {
@@ -18,5 +18,9 @@ class Product extends Model
     public function images(): HasMany
     {
         return $this->hasMany(Image::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

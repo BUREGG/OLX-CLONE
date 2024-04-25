@@ -38,15 +38,20 @@
                             <tr>
                                 <td>{{ $permission->id }}</td>
                                 <td>{{ $permission->name }}</td>
-                                <td>
+                                <td style="display: flex; align-items: center;">
                                     @can('update permission')
                                     <a href="{{ url('permissions/'.$permission->id.'/edit') }}" class="btn btn-success">Edit</a>
                                     @endcan
 
                                     @can('delete permission')
-                                    <a href="{{ url('permissions/'.$permission->id.'/delete') }}" class="btn btn-danger mx-2">Delete</a>
+                                    <form action="{{ route('permissions.destroy', [$permission->id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger mx-2">Delete</button>
+                                    </form>
                                     @endcan
                                 </td>
+                                
                             </tr>
                             @endforeach
                         </tbody>

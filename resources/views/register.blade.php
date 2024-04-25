@@ -34,6 +34,10 @@
           <label for="exampleInputPassword1" class="form-label">Hasło</label>
           <input type="password" class="form-control" id="password" name="password" required>
         </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Telefon</label>
+          <input type="phone_number" class="form-control" id="phone_number" name="phone_number" required>
+        </div>
        
         <button type="submit" action="POST" class="btn btn-primary">Zaloguj</button>
 

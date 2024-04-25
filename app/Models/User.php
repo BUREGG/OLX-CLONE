@@ -22,6 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'google_token',
+        'google_refresh_token',
     ];
 
     /**
@@ -43,8 +45,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    public function offers()
+    public function products()
     {
-       // $this->hasMany(Offer::class);
+        return $this->hasMany(Product::class);
     }
 }

@@ -35,8 +35,10 @@ class ProductController extends Controller
 
     public function productDetails($id)
     {
-        $product = Product::where('id', $id)->firstOrFail();
+        $product = Product::where('id', $id)->with('user')->firstOrFail();
         $product->load('images');
+        
+       //dd($product);
         return view('productdetails',['product' => $product]);
     }
 
