@@ -57,6 +57,7 @@ class PermissionController extends Controller
                 'unique:permissions,name,' . $permission->id,
             ]
         ]);
+        
 
 
         $permission->update([
@@ -68,7 +69,6 @@ class PermissionController extends Controller
 
     public function destroy(Permission $permission)
     {
-
         $permission->delete();
         return redirect('permissions')->with('status', 'Permission Deleted Successfully');
     }
