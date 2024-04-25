@@ -59,6 +59,7 @@ class PermissionController extends Controller
         ]);
         
 
+
         $permission->update([
             'name' => $request->name
         ]);
