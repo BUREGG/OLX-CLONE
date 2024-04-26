@@ -27,18 +27,20 @@ use Laravel\Socialite\Facades\Socialite;
 Route::middleware("auth")->group(function () {
     Route::view('/chat', "chat")->name("chat");
     Route::view('/favorite', "favorite")->name("favorite");
-
-    Route::view('/myaccount', "myaccount")->name("myaccount");
+    Route::view('/myaccount', "myproducts")->name("myaccount");
     Route::view('/addproduct', "addproduct")->name("addproduct");
-    Route::get('/myaccount', [ProductController::class, "index"])->name("index");
+    Route::get('/myaccount', [ProductController::class, "myproducts"])->name("index");
+    Route::post('/addproduct', [ProductController::class, "store"])->name("addproduct");
+    Route::get('/favorite', [ProductController::class, "myfavorite"])->name("myfavorite");
+
+
 });
-Route::post('/addproduct', [ProductController::class, "store"])->name("addproduct");
 Route::get('/', [CategoryController::class, 'getCategory'])->name("homepage");
 Route::get('/product', [ProductController::class, 'DisplayAllProduct'])->name('product.display');
-Route::get('/productdetails/{id}',[ProductController::class, 'productDetails'])->name('productdetails');
-Route::get('/test', [GeoCodeController::class, 'reverseGeocode'])->name('geocode');
-Route::get('category/{id}',[ProductController::class, 'category'])->name('category');
+Route::get('/productdetails/{id}', [ProductController::class, 'productDetails'])->name('productdetails');
+Route::get('category/{id}', [ProductController::class, 'category'])->name('category');
 
+Route::post('/addfavorite/{id}', [ProductController::class, "favorite"])->name("addfavorite");
 
 
 
@@ -46,48 +48,20 @@ Route::get('category/{id}',[ProductController::class, 'category'])->name('catego
 Route::group(['middleware' => ['role:super-admin|admin']], function () {
 
     Route::resource('permissions', App\Http\Controllers\PermissionController::class);
-   // Route::get('permissions/{permission}/delete', [App\Http\Controllers\PermissionController::class, 'destroy']);
-
     Route::resource('roles', App\Http\Controllers\RoleController::class);
- //   Route::get('roles/{roleId}/delete', [App\Http\Controllers\RoleController::class, 'destroy']);
     Route::get('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'addPermissionToRole']);
     Route::put('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'givePermissionToRole']);
-
     Route::resource('users', App\Http\Controllers\UserController::class);
-    //Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
 });
 
 Route::get('login', [AuthController::class, "login"])->name('login');
 Route::post('login', [AuthController::class, "loginPost"])->name('login.post');
-
 Route::get('register', [AuthController::class, "register"])->name('register');
 Route::post('register', [AuthController::class, "registerPost"])->name('register.post');
-
-
 Route::group(['middleware' => ['auth']], function () {
-
     Route::get('/logout',  [AuthController::class, "logout"])->name('logout');
 });
+Route::get('/auth/redirect', [GoogleAuthController::class, 'redirect'])->name('google.auth');
+Route::get('/auth/callback', [GoogleAuthController::class, 'callback'])->name('google.back');
 
-Route::get('/auth/redirect',[GoogleAuthController::class, 'redirect'])->name('google.auth');
-Route::get('/auth/callback',[GoogleAuthController::class, 'callback'])->name('google.back');
-
-// Route::get('/auth/{$provider}/redirect', function () {
-//     return Socialite::driver('google')->redirect();
-// });
-// Route::get('/auth/$provider/callback', function () {
-//     $SocialUser = Socialite::driver('google')->user();
- 
-//     $user = User::updateOrCreate([
-//         'github_id' => $githubUser->id,
-//     ], [
-//         'name' => $githubUser->name,
-//         'email' => $githubUser->email,
-//         'github_token' => $githubUser->token,
-//         'github_refresh_token' => $githubUser->refreshToken,
-//     ]);
- 
-//     Auth::login($user);
- 
-//     return redirect('/dashboard');
-// });
+Route::get('/test', [ProductController::class, 'test']);

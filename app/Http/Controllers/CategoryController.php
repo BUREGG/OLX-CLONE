@@ -12,5 +12,4 @@ class CategoryController extends Controller
       $categories = Category::root()->get();
       return view('welcome', ['categories' => $categories]);
    }
-
 }

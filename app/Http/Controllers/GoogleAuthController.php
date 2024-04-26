@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use Symfony\Component\Console\Input\Input;
 
 class GoogleAuthController extends Controller
 {
@@ -16,19 +17,25 @@ class GoogleAuthController extends Controller
     }
     public function callback()
     {
-        $googleuser = Socialite::driver('google')->user();
-//dd($googleuser);
-$user = User::updateOrCreate([
-    'google_id' => $googleuser->id,
-], [
-    'name' => $googleuser->name,
-    'email' => $googleuser->email,
-    'google_token' => $googleuser->token,
-    'google_refresh_token' => $googleuser->refreshToken,
-]);
+        $googleUser = Socialite::driver('google')->user();
+        //dd($googleuser);
+        $user = User::where('email', $googleUser->email)->first();
 
-Auth::login($user);
-return redirect('/');
 
+        if ($user) {
+            Auth::login($user);
+        } else {
+            $user = User::create([
+                'name' => $googleUser->name,
+                'email' => $googleUser->email,
+                'google_id' => $googleUser->id,
+                'google_token' => $googleUser->token,
+                'google_refresh_token' => $googleUser->refreshToken,
+            ]);
+
+            Auth::login($user);
+        }
+
+        return redirect('/');
     }
 }

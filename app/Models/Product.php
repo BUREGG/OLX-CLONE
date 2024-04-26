@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Product extends Model
 {
     // protected $table = 'products';
-    protected $fillable = ['name', 'description', 'price', 'image', 'location'];
+    protected $fillable = ['name', 'description', 'price', 'image', 'location', 'favorite'];
     use HasFactory;
     public function category()
     {
@@ -23,4 +23,20 @@ class Product extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+    // public function favouriteProduct()
+    // {
+    //     return $this->hasMany(UserProductFavourite::class);
+    // }
+
+    // protected isFav(): Attributte
+    // {
+    //     get: fn () => $this->users()->where('id', auth()->user()->id)
+    // }
+
+    // $product->is_fav
+
 }

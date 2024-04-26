@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
@@ -15,7 +16,6 @@ class ProductController extends Controller
         $product = Product::all();
         $product->load('images');
         return view('product', ['product' => $product]);
-
     }
 
     public function category($id)
@@ -26,21 +26,51 @@ class ProductController extends Controller
         return view('category', ['category' => $category]);
     }
 
-    public function index()
+    public function myproducts()
     {
         $product = Product::all();
         $product->load('images');
         return view('myaccount', ['product' => $product],);
+    }
+    public function myfavorite()
+    {
+        $product = Product::all();
+        $product->load('images');
+        //dd($product);
+        return view('favorite', ['product' => $product],);
     }
 
     public function productDetails($id)
     {
         $product = Product::where('id', $id)->with('user')->firstOrFail();
         $product->load('images');
-        
-       //dd($product);
-        return view('productdetails',['product' => $product]);
+
+        //dd($product);
+        return view('productdetails', ['product' => $product]);
     }
+   
+  public function favorite(Request $request){
+ 
+   $product = Product::findOrFail($request->id);
+   $item = $product->favoritesProducts;
+
+   dd($item);
+//    $product->favorite = !$product->favorite;
+//    $product->load('');
+//     dd($product);
+//     $product->save();
+//     return redirect('/product');
+  }
+
+    public function test()
+    {
+        $user = User::find(1);
+        
+foreach ($user->favouriteProducts as $role) {
+    dd($role);
+}
+    }
+  
 
     public function store(Request $request, GeoCodeController $geoCodeController)
     {
@@ -61,7 +91,7 @@ class ProductController extends Controller
         $product->user_id = auth()->id();
         $product->latitude = $request->latitude;
         $product->longitude = $request->longitude;
-        
+
         $product->address = $geoCodeController->reverseGeocode($product);
         $product->save();
 

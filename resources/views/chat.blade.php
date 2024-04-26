@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<?php
-echo("tu bedzie chat");
-?>
+    <?php
+    echo 'tu bedzie chat';
+    ?>
 @endsection
