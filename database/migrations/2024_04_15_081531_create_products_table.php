@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('price');
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
-            $table->boolean('favorite')->default(false);
+          //  $table->boolean('favorite')->default(false);
            // $table->date('date')->nullable();
             $table->string('address')->nullable();
             $table->timestamps();

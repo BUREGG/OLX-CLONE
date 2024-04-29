@@ -12,6 +12,7 @@
         <tbody>
             <?php
             $product = $product->reverse();
+            // dd($product);
             ?>
             @foreach ($product as $item)
                 <tr>
@@ -27,24 +28,23 @@
                         @endforeach
                     </td>
                     <td style="vertical-align: bottom;">Dodano: {{ $item->created_at->format('Y-m-d H:i') }}
-                     <td> 
-                        
-                       <?php
-                      // dd($item->favorite)
-                       ?>
-   
-
-        <form action="{{ route('addfavorite', ['id' => $item->id]) }}" method="POST">
-            @csrf
-            <button type="submit">
-                {{ $item->favorite ? 'usun z ulubionych' : 'dodaj do ulubionych' }}
-            </button>
-        </form>
-        
-
-
-                    </td> 
+                    <td>
+                            @php
+                            $is_favorite = $item->product_users->where('user_id', Auth::user()->id)->contains('product_id', $item->id);
+                        @endphp
                     
+                        @if ($is_favorite)
+                            <form action="{{ route('deletefavorite', ['id' => $item->id]) }}" method="POST">
+                                @csrf
+                                <button type="submit">Usuń z ulubionych</button>
+                            </form>
+                        @else
+                            <form action="{{ route('addfavorite', ['id' => $item->id]) }}" method="POST">
+                                @csrf
+                                <button type="submit">Dodaj do ulubionych</button>
+                            </form>
+                        @endif
+                    </td>
             @endforeach
         </tbody>
     </table>

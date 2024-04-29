@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_user', function (Blueprint $table) {
+        Schema::create('product_users', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->foreignId('user_id')->constrained()->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreignId('product_id')->constrained()->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->string('fav')->default('fav');
 
         });
     }

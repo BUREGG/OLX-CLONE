@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Attribute as GlobalAttribute;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
-    // protected $table = 'products';
     protected $fillable = ['name', 'description', 'price', 'image', 'location', 'favorite'];
     use HasFactory;
     public function category()
@@ -27,16 +28,9 @@ class Product extends Model
     {
         return $this->belongsToMany(User::class);
     }
-    // public function favouriteProduct()
-    // {
-    //     return $this->hasMany(UserProductFavourite::class);
-    // }
-
-    // protected isFav(): Attributte
-    // {
-    //     get: fn () => $this->users()->where('id', auth()->user()->id)
-    // }
-
-    // $product->is_fav
+    public function product_users()
+    {
+        return $this->hasMany(ProductUser::class);
+    }
 
 }
