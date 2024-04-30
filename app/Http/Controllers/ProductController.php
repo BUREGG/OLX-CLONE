@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
 use App\Models\Category;
 use App\Models\Image;
 use Illuminate\Http\Request;
@@ -74,14 +75,16 @@ class ProductController extends Controller
 
     public function store(Request $request, GeoCodeController $geoCodeController)
     {
-
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',
             'category' => 'required|numeric',
-            'image' => 'required|file|mimes:jpeg,png,jpg,gif|max:1024'
+            'files.*.image' => 'required|file|mimes:jpeg,png,jpg,gif|max:1024'
+
         ]);
+
+
         $user = Auth::user();
         $product = new Product();
         $product->name = $request->name;
@@ -96,18 +99,17 @@ class ProductController extends Controller
         $product->save();
 
 
-        $image = new Image();
-
         if ($request->hasFile('image')) {
-            $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('storage/images/'), $imageName);
-
-            $image = new Image();
-            $image->product_id = $product->id;
-            $image->image = $imageName;
-            $image->save();
+            $files = $request->file('image');
+            foreach ($files as $file) {
+                $imageName = Str::uuid() . '.' . $file->extension();
+                $file->move(public_path('storage/images/'), $imageName);
+                $image = new Image();
+                $image->product_id = $product->id;
+                $image->image = $imageName;
+                $image->save();
+            }
         }
-        //dd($product);
         return redirect('myaccount');
     }
 

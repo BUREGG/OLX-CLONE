@@ -12,7 +12,10 @@
         <tbody>
 
             @foreach ($product as $item)
-                @if ($item->user_id == Auth::user()->id && $item->favorite == true)
+            @php
+                            $is_favorite = $item->product_users->where('user_id', Auth::user()->id)->contains('product_id', $item->id);
+                        @endphp
+                @if ($is_favorite)
                     <tr>
                     <tr onclick="window.location='{{ url('/productdetails/' . $item->id) }}';" style="cursor:pointer;">
                         <td>{{ $item->name }}</td>

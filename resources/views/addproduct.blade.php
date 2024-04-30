@@ -93,7 +93,7 @@
                             <div class="mb-3">
                                 <label for="image" class="form-label">Zdjęcie</label>
                                 <input type="file" accept=".jpg, .jpeg, .png" class="form-control" id="image"
-                                    name="image">
+                                    name="image[]" multiple>
                             </div>
                             <button type="submit" class="btn btn-primary">Dodaj ogłoszenie</button>
 
