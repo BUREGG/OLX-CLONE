@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\Session as FacadesSession;
 
 class AuthController extends Controller
 {
-    // public function favorite(){
-    //     return view('favorite');
-    // }
     public function login()
     {
         return view('login');
@@ -43,7 +40,8 @@ class AuthController extends Controller
         $request->validate([
             "name" => "required",
             "email" => "required",
-            "password" => "required"
+            "password" => "required",
+            "phone_number" => "required"
         ]);
         $user = new User();
         $user->name = $request->name;

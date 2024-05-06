@@ -32,16 +32,13 @@
             margin-bottom: 10px;
         }
     </style>
-    <?php
-    //dd($product);
-    ?>
     </head>
 
     <body>
         <div class="container">
             <h1>{{ $product->name }}</h1>
             <div class="ogloszenie">
-                <img src="{{ asset('storage/images/' . $product->images->first()->image) }}" alt="Zdjęcie produktu">
+
                 <h2>Cena: {{ $product->price }}</h2>
                 <p>Opis produktu: {{ $product->description }}</p>
                 <p>Lokalizacja: {{ $product->address }}</p>
@@ -50,6 +47,9 @@
                 @else
                     <p>Kontakt: Zaloguj się, aby odsłonić numer</p>
                 @endif
+                @foreach ($product->images as $item)
+                    <img src="{{ asset('storage/images/' . $item->image) }}" alt="Zdjęcie produktu">
+                @endforeach
             </div>
         </div>
     @endsection

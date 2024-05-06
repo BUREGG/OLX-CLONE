@@ -10,8 +10,9 @@
         </thead>
         <tbody>
             <?php
-            $items = $category->product;
-            $items = $category->products->reverse();
+            //dd($category);
+            $items = $products;
+            $items = $products->reverse();
             ?>
             @foreach ($items as $item)
                 <tr>
@@ -21,11 +22,28 @@
                     <td>
 
 
-                        @foreach ($item->images as $image)
-                            <img src="{{ asset('storage/images/' . $image->image) }}" width="170px" height="170px"
-                                alt="Zdjecie">
-                        @endforeach
+                        @if ($item->images->isNotEmpty())
+                            <img src="{{ asset('storage/images/' . $item->images->first()->image) }}" width="170px"
+                                height="170px" alt="Zdjecie">
+                        @endif
                     </td>
+                    <td>
+                        @php
+                        $is_favorite = $item->product_users->where('user_id', Auth::user()->id)->contains('product_id', $item->id);
+                    @endphp
+                
+                    @if ($is_favorite)
+                        <form action="{{ route('deletefavorite', ['id' => $item->id]) }}" method="POST">
+                            @csrf
+                            <button type="submit">Usuń z ulubionych</button>
+                        </form>
+                    @else
+                        <form action="{{ route('addfavorite', ['id' => $item->id]) }}" method="POST">
+                            @csrf
+                            <button type="submit">Dodaj do ulubionych</button>
+                        </form>
+                    @endif
+                </td>
             @endforeach
         </tbody>
     </table>

@@ -11,11 +11,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php
-            //dump($product)
-            ?>
-
-            @foreach ($product as $item)
+            @foreach ($products as $item)
                 @if ($item->user_id == Auth::user()->id)
                     <tr>
                         <td>{{ $item->id }}</td>

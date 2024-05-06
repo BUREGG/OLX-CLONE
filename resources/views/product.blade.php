@@ -11,21 +11,20 @@
         </thead>
         <tbody>
             <?php
-            $product = $product->reverse();
-            // dd($product);
+            $products = $products->reverse();
             ?>
-            @foreach ($product as $item)
-                <tr>
+            @foreach ($products as $item)
+            
+            <tr>
                 <tr onclick="window.location='{{ url('/productdetails/' . $item->id) }}';" style="cursor:pointer;">
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->price }}</td>
                     <td>
-
-
-                        @foreach ($item->images as $image)
-                            <img src="{{ asset('storage/images/' . $image->image) }}" width="170px" height="170px"
-                                alt="Zdjecie">
-                        @endforeach
+                       
+                        
+                        @if ($item->images->isNotEmpty())
+                        <img src="{{ asset('storage/images/' . $item->images->first()->image) }}" width="170px" height="170px" alt="Zdjecie">
+                    @endif
                     </td>
                     <td style="vertical-align: bottom;">Dodano: {{ $item->created_at->format('Y-m-d H:i') }}
                     <td>

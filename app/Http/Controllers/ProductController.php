@@ -10,34 +10,36 @@ use App\Models\Product;
 use App\Models\ProductUser;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Services\GeoCodeService;
+use App\Services\UserService;
 
 class ProductController extends Controller
 {
     public function DisplayAllProduct()
     {
-        $product = Product::all();
-        $product->load('images', 'product_users');
-        return view('product', ['product' => $product]);
+        $products = Product::with('images', 'product_users')->get();
+        return view('product', ['products' => $products]);
     }
-
     public function category($id)
     {
-        $category = Category::where('id', $id)->firstOrFail();
-        $category->load('products');
-        return view('category', ['category' => $category]);
+        $category = Category::where('id', $id)->with('children')->firstOrFail();
+        $categoryId = $category->children->pluck('id')->toArray();
+        $categoryId[] = $category->id;
+        $products = Product::whereIn('category_id', $categoryId)->get();
+
+        return view('category', ['products' => $products]);
     }
 
     public function myproducts()
     {
-        $product = Product::all();
-        $product->load('images');
-        return view('myaccount', ['product' => $product],);
+        $products = Product::with('images')->get();
+        return view('myaccount', ['products' => $products],);
     }
     public function myfavorite()
     {
-        $product = Product::all();
-        $product->load('images');
-        return view('favorite', ['product' => $product],);
+        $products = Product::all();
+        $products->load('images');
+        return view('favorite', ['products' => $products],);
     }
 
     public function productDetails($id)
@@ -60,20 +62,10 @@ class ProductController extends Controller
         if ($product) {
             $product->delete();
         }
-        return redirect('/product');
+        return redirect()->back();
     }
 
-    // public function test()
-    // {
-    //     $user = User::find(1);
-
-    //     foreach ($user->favouriteProducts as $role) {
-    //         dd($role);
-    //     }
-    // }
-
-
-    public function store(Request $request, GeoCodeController $geoCodeController)
+    public function store(Request $request, GeoCodeService $geoCodeService)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -84,7 +76,6 @@ class ProductController extends Controller
 
         ]);
 
-
         $user = Auth::user();
         $product = new Product();
         $product->name = $request->name;
@@ -94,8 +85,7 @@ class ProductController extends Controller
         $product->user_id = auth()->id();
         $product->latitude = $request->latitude;
         $product->longitude = $request->longitude;
-
-        $product->address = $geoCodeController->reverseGeocode($product);
+        $product->address = $geoCodeService->reverseGeocode($product);
         $product->save();
 
 
