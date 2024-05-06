@@ -44,5 +44,5 @@
                 ten link!</a></p>
     </form>
     {{-- <button type="submit" class="btn btn-primary" href={{url('/auth/google/redirect')}}>google</button>  --}}
-    <a href={{ url('auth/redirect') }}>login google</a>
+    <a href={{ url('auth/redirect') }}>Zaloguj za pomocą google</a>
 @endsection
