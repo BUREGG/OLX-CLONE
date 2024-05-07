@@ -25,6 +25,13 @@
                                     alt="Zdjecie">
                             @endforeach
                         </td>
+                        <td>
+                            <form action="{{ route('product.delete', [$item->id]) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger mx-2">Delete</button>
+                            </form>
+                        </td>
                 @endif
             @endforeach
         </tbody>

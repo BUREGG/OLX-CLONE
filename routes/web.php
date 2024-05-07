@@ -9,6 +9,7 @@ use App\Http\Controllers\GeoCodeController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\PermissionController;
 use App\Models\Product;
+use App\Models\ProductUser;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
@@ -32,6 +33,7 @@ Route::middleware("auth")->group(function () {
     Route::get('/myaccount', [ProductController::class, "myproducts"])->name("index");
     Route::post('/addproduct', [ProductController::class, "store"])->name("addproduct");
     Route::get('/favorite', [ProductController::class, "myfavorite"])->name("myfavorite");
+    Route::delete('/delete/{id}',[ProductController::class, "destroy"])->name("product.delete");
 
 
 });
