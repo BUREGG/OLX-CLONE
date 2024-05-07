@@ -26,11 +26,6 @@ class GeoCodeService {
 
         $location = json_decode($response);
 
-
-        $product->update([
-            ''
-        ]);
-
         if (isset($location->address->city)) {
             return $location->address->city;
         } elseif (isset($location->address->town)) {

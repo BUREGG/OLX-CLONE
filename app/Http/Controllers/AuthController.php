@@ -43,6 +43,11 @@ class AuthController extends Controller
             "password" => "required",
             "phone_number" => "required"
         ]);
+        $userExists = User::where('email', $request->email)->exists();
+        if($userExists)
+        {
+            return redirect(route('login'))->with("error", "Podany email istnieje już w bazie");
+        }
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
@@ -52,7 +57,7 @@ class AuthController extends Controller
 
         if ($user->save() && Auth::attempt($credentials)) {
             return redirect()->intended(route('homepage'))->with("success", "user created succesfully");
-        }
+        }else
         return redirect(route('register'))->with("error", "Failed to create user");
     }
     public function logout()

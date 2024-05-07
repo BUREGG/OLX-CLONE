@@ -78,7 +78,7 @@ class RoleController extends Controller
 
     public function destroy(Role $role)
     {
-if($role->name=='super-admin')
+if($role->name==='super-admin')
 {
     return redirect('roles')->with('status', 'no possible');
 }else

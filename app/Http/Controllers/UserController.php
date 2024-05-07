@@ -103,7 +103,7 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        if($user->name=='Super Admin')
+        if($user->name==='Super Admin')
         {
             return redirect('/users')->with('status','no possible');
 
