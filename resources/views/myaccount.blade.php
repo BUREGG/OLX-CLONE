@@ -29,9 +29,12 @@
                             <form action="{{ route('product.delete', [$item->id]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger mx-2">Delete</button>
+                                <button type="submit" class="btn btn-danger mx-2">Usun</button>
                             </form>
+                            <a href="{{ url('/editproduct/'.$item->id) }}" class="btn btn-success" style=margin-top:10px>Edytuj</a>
+
                         </td>
+                        
                 @endif
             @endforeach
         </tbody>

@@ -111,13 +111,36 @@ class ProductController extends Controller
     }
 
 
-    public function edit(string $id)
+    public function edit($id)
     {
+        $product = Product::find($id);
+        return view('editproduct', [
+            'product' => $product
+           
+        ]);
     }
 
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
+        $product = Product::find($id);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
+            
+        ]);
+       
+            $product->update([
+                'name' => $request->name,
+                'description' => $request->description,
+                'price' => $request->price
+    ]);
+     
+        
+        return redirect('myaccount')->with('status', 'ogłoszenie zaktualizowane');
+
+
     }
 
 

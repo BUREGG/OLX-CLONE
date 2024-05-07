@@ -34,6 +34,9 @@ Route::middleware("auth")->group(function () {
     Route::post('/addproduct', [ProductController::class, "store"])->name("addproduct");
     Route::get('/favorite', [ProductController::class, "myfavorite"])->name("myfavorite");
     Route::delete('/delete/{id}',[ProductController::class, "destroy"])->name("product.delete");
+    Route::get('/editproduct/{id}',[ProductController::class, "edit"])->name("product.edit");
+    Route::put('/updateproduct/{id}',[ProductController::class, "update"])->name("product.update");
+
 
 
 });
