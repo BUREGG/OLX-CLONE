@@ -70,7 +70,7 @@
                 </ul>
 
                 @auth
-                    <span class="navbar-text">
+                    <span class="navbar-text" style="margin-right: 5px">
                         Zalogowany jako: {{ auth()->user()->name }}
                     </span>
                 @endauth

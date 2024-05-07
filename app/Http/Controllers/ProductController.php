@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Services\GeoCodeService;
 use App\Services\UserService;
+use Carbon\Carbon;
 
 class ProductController extends Controller
 {
@@ -75,6 +76,7 @@ class ProductController extends Controller
             'files.*.image' => 'required|file|mimes:jpeg,png,jpg,gif|max:1024'
 
         ]);
+        $formattedDateTime = Carbon::now()->format('Y-m-d H:i:s');
 
         $user = Auth::user();
         $product = new Product();
@@ -84,6 +86,7 @@ class ProductController extends Controller
         $product->category_id = $request->category;
         $product->user_id = auth()->id();
         $product->latitude = $request->latitude;
+        $product->refresh = $formattedDateTime;
         $product->longitude = $request->longitude;
         $product->address = $geoCodeService->reverseGeocode($product);
         $product->save();
@@ -151,5 +154,16 @@ class ProductController extends Controller
             $product->delete();
         }
         return redirect()->back();
+    }
+
+
+    public function refresh($id){
+        $product = Product::find($id);
+        $formattedDateTime = Carbon::now()->format('Y-m-d H:i:s');
+        
+        $product->update(['refresh' => $formattedDateTime]);
+    
+        return redirect('myaccount')->with('status', 'Ogłoszenie odświeżone');
+
     }
 }

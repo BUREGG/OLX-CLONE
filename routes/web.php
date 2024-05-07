@@ -36,6 +36,7 @@ Route::middleware("auth")->group(function () {
     Route::delete('/delete/{id}',[ProductController::class, "destroy"])->name("product.delete");
     Route::get('/editproduct/{id}',[ProductController::class, "edit"])->name("product.edit");
     Route::put('/updateproduct/{id}',[ProductController::class, "update"])->name("product.update");
+    Route::put('/refresh/{id}',[ProductController::class, "refresh"])->name("product.refresh");
 
 
 
