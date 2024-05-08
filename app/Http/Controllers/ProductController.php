@@ -160,6 +160,7 @@ class ProductController extends Controller
         return redirect('myaccount')->with('status', 'ogłoszenie zaktualizowane');
     }
 
+
     public function destroy(Product $product)
     {
         $product->delete();

@@ -43,6 +43,11 @@ Route::middleware("auth")->group(function () {
     Route::get('editprofile', [App\Http\Controllers\UserController::class, "editProfile"])->name('editprofile');
     Route::put('editprofilepost', [App\Http\Controllers\UserController::class, "editProfilePost"])->name('editprofile.post');
     Route::get('chart', [ChartController::class, "chart"])->name('chart');
+    Route::get('/editproduct/{id}',[ProductController::class, "edit"])->name("product.edit");
+    Route::put('/updateproduct/{id}',[ProductController::class, "update"])->name("product.update");
+    Route::put('/refresh/{id}',[ProductController::class, "refresh"])->name("product.refresh");
+
+
 
 });
 Route::get('/', [CategoryController::class, 'getCategory'])->name("homepage");
