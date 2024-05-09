@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -31,6 +32,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+      
         $request->validate([
             'name' => [
                 'required',
@@ -49,9 +51,10 @@ class UserController extends Controller
                 'min:8',
                 'max:20'
             ],
-            'roles' => [
-                'required'
-            ]
+            'roles.*' => [
+                'required',
+                Rule::exists('roles', 'name')
+            ],
         ]);
 
         $user = User::create([

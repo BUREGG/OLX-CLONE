@@ -54,7 +54,7 @@ class PermissionController extends Controller
             'name' => [
                 'required',
                 'string',
-                'unique:permissions,name,' . $permission->id
+                'unique:permissions,name,' . $permission->id,
             ]
         ]);
 
