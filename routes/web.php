@@ -48,8 +48,7 @@ Route::get('category/{id}', [ProductController::class, 'category'])->name('categ
 
 Route::post('/addfavorite/{id}', [ProductController::class, "favorite"])->name("addfavorite");
 Route::post('/deletefavorite/{id}', [ProductController::class, "deletefavorite"])->name("deletefavorite");
-Route::get('api/products', [\App\Http\Controllers\Api\ProductController::class, 'index']); 
-Route::get('api/products/{product}', [\App\Http\Controllers\Api\ProductController::class, 'show']); 
+
 
 
 

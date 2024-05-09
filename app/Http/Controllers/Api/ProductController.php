@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -13,7 +16,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::all();
+        // return Product::all();
+        return ProductResource::collection(Product::all()); 
+
     }
 
     /**
@@ -21,7 +26,8 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $product = Product::create($request->all());
+        return new ProductResource($product);
     }
 
     /**
@@ -29,22 +35,34 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return $product;
+        // return $product;
+        return new ProductResource($product);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update( Product $product ,StoreProductRequest $request)
+
     {
-        //
+        $request->validate([
+            'name' => 'string|max:255',]);
+        //dd($request);
+        $product->update($request->all());
+        return new ProductResource($product);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return response()->noContent(); 
+
+    }
+    public function list()
+    {
+        return ProductResource::collection(Product::all());
     }
 }
