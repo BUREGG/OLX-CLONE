@@ -23,7 +23,7 @@ Route::get('products/{product}', [\App\Http\Controllers\Api\ProductController::c
 Route::get('lists/products', [\App\Http\Controllers\Api\ProductController::class, 'list']) ;
 Route::get('users', [\App\Http\Controllers\Api\UserController::class, 'index']); 
 Route::post('users', [\App\Http\Controllers\Api\UserController::class, 'store']); 
-Route::post('products/{product}', [\App\Http\Controllers\Api\ProductController::class, 'update']); 
+Route::put('products/{product}', [\App\Http\Controllers\Api\ProductController::class, 'update']); 
 Route::delete('products/{product}', [\App\Http\Controllers\Api\ProductController::class, 'destroy']); 
 
 Route::post('products', [\App\Http\Controllers\Api\ProductController::class, 'store']); 
