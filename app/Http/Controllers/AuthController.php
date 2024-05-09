@@ -72,6 +72,7 @@ class AuthController extends Controller
         $user->password = Hash::make($request->password);
         $user->phone_number = $request->phone_number;
         $credentials = $request->only("email", "password");
+        $user->assignRole('User');
 
         if ($user->save() && Auth::attempt($credentials)) {
             return redirect()->intended(route('homepage'))->with("success", "user created succesfully");
