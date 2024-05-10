@@ -73,3 +73,9 @@ Route::get('/auth/redirect', [GoogleAuthController::class, 'redirect'])->name('g
 Route::get('/auth/callback', [GoogleAuthController::class, 'callback'])->name('google.back');
 
 Route::get('/test', [ProductController::class, 'test']);
+
+
+Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('password.request');
+Route::post('/forgot-password', [AuthController::class, 'forgotPasswordPost'])->name('password.post');
+Route::get('/reset-password/{token}', [AuthController::class, 'resetPassword'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'forgotPasswordPost'])->name('password.resetpost');
