@@ -13,7 +13,6 @@
         "laravel/jetstream": "^4.3",
         "laravel/passport": "^12.2",
         "laravel/reverb": "@beta",
-        "laravel/passport": "^12.2",
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.13",
         "laravel/tinker": "^2.8",
