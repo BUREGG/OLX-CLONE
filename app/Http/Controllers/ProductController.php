@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Services\GeoCodeService;
 use App\Services\UserService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -70,7 +71,7 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'required|string|max:250',
             'price' => 'required|numeric',
             'category' => 'required|numeric',
             'files.*.image' => 'required|file|mimes:jpeg,png,jpg,gif|max:1024'
@@ -114,9 +115,8 @@ class ProductController extends Controller
     }
 
 
-    public function edit($id)
+    public function edit(Product $product)
     {
-        $product = Product::find($id);
         return view('editproduct', [
             'product' => $product
            
@@ -124,22 +124,32 @@ class ProductController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+    public function update(Product $product, Request $request)
     {
-        $product = Product::find($id);
+        
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'price' => 'required|numeric',
+            'name' => [
+                'required',
+                'string',
+                'max:255'
+            ],
+            'description' => [
+                'required',
+                'string'
+            ],
+            'price' => [
+                'required',
+                'numeric'
+            ],
             
         ]);
-       
+
             $product->update([
                 'name' => $request->name,
                 'description' => $request->description,
                 'price' => $request->price
     ]);
-     
+
         
         return redirect('myaccount')->with('status', 'ogłoszenie zaktualizowane');
 
@@ -147,18 +157,14 @@ class ProductController extends Controller
     }
 
 
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        $product = Product::find($id);
-        if($product){
-            $product->delete();
-        }
+        $product->delete();
         return redirect()->back();
     }
 
 
-    public function refresh($id){
-        $product = Product::find($id);
+    public function refresh(Product $product){
         $formattedDateTime = Carbon::now()->format('Y-m-d H:i:s');
         
         $product->update(['refresh' => $formattedDateTime]);

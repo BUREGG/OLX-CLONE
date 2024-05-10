@@ -32,7 +32,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-      
+
         $request->validate([
             'name' => [
                 'required',
@@ -106,15 +106,12 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        if($user->name==='Super Admin')
-        {
-            return redirect('/users')->with('status','no possible');
+        if ($user->name === 'Super Admin') {
+            return redirect('/users')->with('status', 'no possible');
+        } else {
+            $user->delete();
 
-        }else
-        {
-        $user->delete();
-
-        return redirect('/users')->with('status', 'User Delete Successfully');
+            return redirect('/users')->with('status', 'User Delete Successfully');
+        }
     }
-}
 }

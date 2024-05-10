@@ -13,7 +13,7 @@ class Category extends Model
     {
         $query->whereNull('parent_id');
     }
-    public function children()
+    public function children() :HasMany
     {
         return $this->hasMany(Category::class, 'parent_id');
     }

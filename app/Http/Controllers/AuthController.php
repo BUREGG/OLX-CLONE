@@ -26,8 +26,14 @@ class AuthController extends Controller
     function loginPost(Request $request)
     {
         $request->validate([
-            "email" => "required",
-            "password" => "required"
+            'email' => [
+                'required',
+                'email',
+                'exists:users,email',
+            ],
+            'password' => [
+                'required'
+                ]
         ]);
         $credentials = $request->only("email", "password");
         if (Auth::attempt($credentials)) {
@@ -38,10 +44,22 @@ class AuthController extends Controller
     function registerPost(Request $request)
     {
         $request->validate([
-            "name" => "required",
-            "email" => "required",
-            "password" => "required",
-            "phone_number" => "required"
+            'name' => [
+                'required'
+            ],
+            'email' => [
+                'required',
+                'email',
+                'unique:users,email'
+            ],
+            'password' => [
+                'required',
+                'min:7'
+            ],
+            'phone_number' => [
+                'required',
+                'digits:9'
+            ]
         ]);
         $userExists = User::where('email', $request->email)->exists();
         if($userExists)
