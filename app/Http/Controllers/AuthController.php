@@ -71,6 +71,10 @@ class AuthController extends Controller
                 'digits:9'
             ]
         ]);
+        $recaptcha = $request->input('g-recaptcha-response');
+        if (is_null($recaptcha)) {
+         return redirect()->back()->with('error', "Please complete the recaptcha again to proceed. ");;
+        }
         if ($validator->fails()) {
             return redirect()->back()->with('error', 'Niepoprawne dane');
         }
@@ -154,6 +158,7 @@ class AuthController extends Controller
             ]
 
         ]);
+       
         if ($validator->fails()) {
             return redirect()->back()->with('error', 'Niepoprawne dane');
         }

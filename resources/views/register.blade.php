@@ -6,6 +6,8 @@
             height: 200px;
         }
     </style>
+    <script async src="https://www.google.com/recaptcha/api.js"></script>
+
     <div class="spacer"></div>
    
 
@@ -36,6 +38,7 @@
             <label for="exampleInputPassword1" class="form-label">Telefon</label>
             <input type="phone_number" class="form-control" id="phone_number" name="phone_number" required>
         </div>
+        <div class="g-recaptcha mt-4" data-sitekey={{config('services.recaptcha.key')}}></div>
 
         <button type="submit" action="POST" class="btn btn-primary">Zarejestruj</button>
 
