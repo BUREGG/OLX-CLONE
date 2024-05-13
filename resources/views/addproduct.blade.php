@@ -7,7 +7,10 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
     <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
-
+    @if (Session::has('error'))
+        <div class="alert alert-danger mt-2">{{ Session::get('error') }}
+        </div>
+    @endif
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">

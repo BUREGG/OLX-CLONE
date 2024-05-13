@@ -7,9 +7,9 @@
         }
     </style>
     <div class="spacer"></div>
+   
 
-
-    <form method="POST" action="{{ route('register.post') }}">
+    <form method="POST" action="{{ route('register.post') }}" autocomplete="off">
         @csrf
         <div class="mb-3">
             @if (session()->has('success'))

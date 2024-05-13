@@ -1,5 +1,8 @@
 @extends('layouts.app')
-
+@if (Session::has('error'))
+    <div class="alert alert-danger mt-2">{{ Session::get('error') }}
+    </div>
+@endif
 @section('content')
     <div style="margin-top:50px; max-width: 400px;" class="list-group" id="myList" role="tablist">
         @foreach ($categories as $category)

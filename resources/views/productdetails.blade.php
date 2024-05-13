@@ -32,7 +32,10 @@
             margin-bottom: 10px;
         }
     </style>
-    </head>
+    @if (Session::has('error'))
+        <div class="alert alert-danger mt-2">{{ Session::get('error') }}
+        </div>
+    @endif
 
     <body>
         <div class="container">
