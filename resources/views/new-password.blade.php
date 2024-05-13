@@ -2,7 +2,7 @@
  
 @section('content')
 
-<form action="{{route('password.resetpost',[$token])}}" method="POST">
+<form action="{{route('password.resetpost')}}" method="POST">
     @csrf
     @method('POST')
 
@@ -13,11 +13,11 @@
 </div>
 <div class="mb-3">
     <label for="">haslo</label>
-    <input type="password" name="password" class="form-control" />
+    <input type="password"  name="password" class="form-control" />
 </div>
 <div class="mb-3">
     <label for="">powtórz hasło</label>
-    <input type="password" name="password-confirmation" class="form-control" />
+    <input type="password" name="password_confirmation" class="form-control" />
 </div>
 <div class="mb-3">
     <button type="submit" class="btn btn-primary">Wyslij</button>

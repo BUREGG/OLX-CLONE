@@ -9,9 +9,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Session as FacadesSession;
+use PgSql\Lob;
 
 class AuthController extends Controller
 {
@@ -124,7 +126,11 @@ class AuthController extends Controller
     }
     public function resetPasswordPost(Request $request)
     {
+       
         $request->validate([
+            'token' => [
+                'required'
+            ],
             'email' => [
                 'required',
                 'email',
@@ -139,7 +145,7 @@ class AuthController extends Controller
                 'required',
                 'string',
                 'min:7',
-                'confirmed'
+                'same:password'
             ]
 
         ]);
