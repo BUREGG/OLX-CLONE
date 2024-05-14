@@ -60,7 +60,7 @@
                                 height="170px" alt="Zdjecie">
                         @endif
                     </td>
-                    <td style="vertical-align: bottom;">Dodano: {{ $item->created_at->format('Y-m-d H:i') }} Lokalizacja:
+                    <td style="vertical-align: bottom;">Dodano: {{ $item->refresh->format('Y-m-d H:i') }} Lokalizacja:
                         {{ $item->address }}
                     <td>
                         @php
