@@ -25,8 +25,7 @@
                 </div>
             @endif
             <label for="exampleInputEmail1" class="form-label">Nazwa</label>
-            <input type="text" class="form-control" id="name" aria-describedby="NameHelp" name="name" autofocus
-                required>
+            <input type="text" class="form-control" id="name" aria-describedby="NameHelp" name="name" autofocus required>
             <label for="exampleInputEmail1" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" required>
         </div>

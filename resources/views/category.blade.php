@@ -9,7 +9,7 @@
         <tbody>
             <?php
             $items = $products;
-            $items = $products->reverse();
+            $items = $products->sortByDesc('refresh');
             ?>
             @foreach ($items as $item)
                 <tr>
