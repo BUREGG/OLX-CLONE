@@ -21,6 +21,12 @@ class ProductResource extends JsonResource
             'description' => $this->when($request->is('api/products*'),function(){
                 return $this->description;
             }),
+            'user_id' => $this->user_id,
+            'category_id' => $this->category_id,
+            'refresh' => $this->refresh,
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
+            'address' => $this->address
         ];
         
     }

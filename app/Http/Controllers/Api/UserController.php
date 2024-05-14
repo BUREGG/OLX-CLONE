@@ -10,15 +10,14 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index(){
-    $users = User::with('products')->get();
-return UserResource::collection($users);   
- }
- public function store(StoreUserRequest $request)
- {
-    $user = User::create($request->all());
+    public function index()
+    {
+        $users = User::with('products')->get();
+        return UserResource::collection($users);
+    }
+    public function store(StoreUserRequest $request)
+    {
+        $user = User::create($request->all());
         return new UserResource($user);
-    
- }
-
+    }
 }

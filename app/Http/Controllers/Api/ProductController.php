@@ -9,6 +9,7 @@ use App\Models\Product;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 use Illuminate\Log\Logger;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
@@ -26,8 +27,10 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
+        //dd($request->all());
+
         $product = Product::create($request->all());
         return new ProductResource($product);
     }
@@ -44,7 +47,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update( Product $product ,StoreProductRequest $request)
+    public function update(Product $product, Request $request)
 
     {
         Log::info(request());
@@ -58,11 +61,18 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
-        return response()->noContent(); 
+        return response()->json([
+            'Usunięto produkt o id:' => $product->id
+        ]); 
 
     }
     public function list()
     {
         return ProductResource::collection(Product::all());
+    }
+    public function myProducts()
+    {
+        $userId = Auth::id();
+        return Product::where('user_id', $userId)->with('images')->get();
     }
 }
