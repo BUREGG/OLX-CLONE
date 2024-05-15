@@ -77,9 +77,11 @@ class RoleController extends Controller
 
     public function destroy(Role $role)
     {
-        if ($role->name === 'super-admin') {
-            return redirect('roles')->with('status', 'no possible');
-        } else {
+if($role->name=='super-admin')
+{
+    return redirect('roles')->with('status', 'no possible');
+}else
+{
 
 
             $role->delete();
