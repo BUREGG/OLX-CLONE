@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PermissionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,21 +21,26 @@ Route::middleware("auth")->group(function(){
     Route::view('/myaccount', "myaccount")->name("myaccount");
 
 
-   // Route::view('/chat'
+   
 
 });
+Route::group(['middleware' => ['role:super-admin|admin']], function() {
+
+    Route::resource('permissions', App\Http\Controllers\PermissionController::class);
+    Route::get('permissions/{permissionId}/delete', [App\Http\Controllers\PermissionController::class, 'destroy']);
+
+    Route::resource('roles', App\Http\Controllers\RoleController::class);
+    Route::get('roles/{roleId}/delete', [App\Http\Controllers\RoleController::class, 'destroy']);
+    Route::get('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'addPermissionToRole']);
+    Route::put('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'givePermissionToRole']);
+
+    Route::resource('users', App\Http\Controllers\UserController::class);
+    Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
+
+});
+//Route::resource('permission', [PermissionController::class]);
 
 
-
-
-// Route::get('/', function () {
-//     return view('welcome')->name('home');
-// });
-
-// Route::get('/chat', function () {
-//     return view('chat');
-// });
-//Route::get('chat', [AuthController::class, "chat"])->name('chat');
 
 Route::get('login', [AuthController::class, "login"])->name('login');
 Route::post('login', [AuthController::class, "loginPost"])->name('login.post');
