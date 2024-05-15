@@ -4,13 +4,18 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 use Illuminate\Log\Logger;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class ProductController extends Controller
 {
@@ -29,10 +34,23 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //dd($request->all());
-
-        $product = Product::create($request->all());
+        $user_id=$request->user_id;
+        $user = DB::table('users')->pluck('id');
+        $category_id=$request->category_id;
+        $category = DB::table('categories')->pluck('id');
+        if($user->contains($user_id)&&($category->contains($category_id)))
+        {
+            $product = Product::create($request->all());
         return new ProductResource($product);
+           
+        }else
+        {
+            return response()->json([
+                'Nie ma uzytkownika lub kategorii o takim ID'
+            ]);
+        }
+        
+        
     }
 
     /**
@@ -47,23 +65,49 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Product $product, Request $request)
+    public function update(Product $product, UpdateProductRequest $request)
 
     {
-        Log::info(request());
+        $userId = Auth::id();
+        if($request->user()->hasRole('super-admin'))
+        {
+            $product->update($request->all());
+            return new ProductResource($product);
+        }
+        else if($userId!=$product->user_id){
+            return response()->json([
+                'Nie mozna zaktualizować nie swojego produktu'
+            ]);
+        }else
+        {
         $product->update($request->all());
         return new ProductResource($product);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product, Request $request)
     {
+        $userId = Auth::id();
+        if($request->user()->hasRole('super-admin')){
+            $product->delete();
+            return response()->json([
+                'Usunięto produkt o id:' => $product->id
+            ]); 
+        }else if ($userId!=$product->user_id){
+            return response()->json([
+                'Nie mozna usunac nie swojego produktu'
+            ]);
+        }
+        else
+        {
         $product->delete();
         return response()->json([
             'Usunięto produkt o id:' => $product->id
         ]); 
+    }
 
     }
     public function list()
