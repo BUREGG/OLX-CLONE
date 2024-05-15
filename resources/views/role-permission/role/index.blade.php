@@ -39,7 +39,7 @@
                             <tr>
                                 <td>{{ $role->id }}</td>
                                 <td>{{ $role->name }}</td>
-                                <td>
+                                <td style="display: flex; align-items: center;">
                                     <a href="{{ url('roles/'.$role->id.'/give-permissions') }}" class="btn btn-warning">
                                         Add / Edit Role Permission
                                     </a>
@@ -51,9 +51,11 @@
                                     @endcan
 
                                     @can('delete role')
-                                    <a href="{{ url('roles/'.$role->id.'/delete') }}" class="btn btn-danger mx-2">
-                                        Delete
-                                    </a>
+                                    <form action="{{ route('roles.destroy', [$role->id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger mx-2">Delete</button>
+                                    </form>
                                     @endcan
                                 </td>
                             </tr>

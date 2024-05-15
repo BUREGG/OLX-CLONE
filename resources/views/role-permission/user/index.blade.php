@@ -42,21 +42,24 @@
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td>
+                                <td >
                                     @if (!empty($user->getRoleNames()))
                                         @foreach ($user->getRoleNames() as $rolename)
                                             <label class="badge bg-primary mx-1">{{ $rolename }}</label>
                                         @endforeach
                                     @endif
                                 </td>
-                                <td>
+                                <td style="display: flex; align-items: center;">
                                     @can('update user')
                                     <a href="{{ url('users/'.$user->id.'/edit') }}" class="btn btn-success">Edit</a>
                                     @endcan
 
                                     @can('delete user')
-                                    <a href="{{ url('users/'.$user->id.'/delete') }}" class="btn btn-danger mx-2">Delete</a>
-                                    @endcan
+                                    <form action="{{ route('users.destroy', [$user->id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger mx-2">Delete</button>
+                                    </form>                                    @endcan
                                 </td>
                             </tr>
                             @endforeach

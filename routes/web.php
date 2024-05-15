@@ -1,8 +1,18 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GetCategoryController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\AllproductController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\GeoCodeController;
+use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\PermissionController;
+use App\Models\Product;
+use App\Models\ProductUser;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,42 +24,51 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::middleware("auth")->group(function(){
-    Route::view('/', "welcome")->name("home");
+
+Route::middleware("auth")->group(function () {
     Route::view('/chat', "chat")->name("chat");
     Route::view('/favorite', "favorite")->name("favorite");
-    Route::view('/myaccount', "myaccount")->name("myaccount");
+    Route::view('/myaccount', "myproducts")->name("myaccount");
+    Route::view('/addproduct', "addproduct")->name("addproduct");
+    Route::get('/myaccount', [ProductController::class, "myproducts"])->name("index");
+    Route::post('/addproduct', [ProductController::class, "store"])->name("addproduct");
+    Route::get('/favorite', [ProductController::class, "myfavorite"])->name("myfavorite");
+    Route::delete('/delete/{product}',[ProductController::class, "destroy"])->name("product.delete");
+    Route::get('/editproduct/{product}',[ProductController::class, "edit"])->name("product.edit");
+    Route::put('/updateproduct/{product}',[ProductController::class, "update"])->name("product.update");
+    Route::put('/refresh/{product}',[ProductController::class, "refresh"])->name("product.refresh");
 
 
-   
 
 });
-Route::group(['middleware' => ['role:super-admin|admin']], function() {
+Route::get('/', [CategoryController::class, 'getCategory'])->name("homepage");
+Route::get('/product', [ProductController::class, 'DisplayAllProduct'])->name('product.display');
+Route::get('/productdetails/{id}', [ProductController::class, 'productDetails'])->name('productdetails');
+Route::get('category/{id}', [ProductController::class, 'category'])->name('category');
+
+Route::post('/addfavorite/{id}', [ProductController::class, "favorite"])->name("addfavorite");
+Route::post('/deletefavorite/{id}', [ProductController::class, "deletefavorite"])->name("deletefavorite");
+
+
+
+
+Route::group(['middleware' => ['role:super-admin|admin']], function () {
 
     Route::resource('permissions', App\Http\Controllers\PermissionController::class);
-    Route::get('permissions/{permissionId}/delete', [App\Http\Controllers\PermissionController::class, 'destroy']);
-
     Route::resource('roles', App\Http\Controllers\RoleController::class);
-    Route::get('roles/{roleId}/delete', [App\Http\Controllers\RoleController::class, 'destroy']);
     Route::get('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'addPermissionToRole']);
     Route::put('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'givePermissionToRole']);
-
     Route::resource('users', App\Http\Controllers\UserController::class);
-    Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
-
 });
-//Route::resource('permission', [PermissionController::class]);
-
-
 
 Route::get('login', [AuthController::class, "login"])->name('login');
 Route::post('login', [AuthController::class, "loginPost"])->name('login.post');
-
 Route::get('register', [AuthController::class, "register"])->name('register');
 Route::post('register', [AuthController::class, "registerPost"])->name('register.post');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/logout',  [AuthController::class, "logout"])->name('logout');
+});
+Route::get('/auth/redirect', [GoogleAuthController::class, 'redirect'])->name('google.auth');
+Route::get('/auth/callback', [GoogleAuthController::class, 'callback'])->name('google.back');
 
-
-Route::group(['middleware' => ['auth']], function() {
-   
-    Route::get('/logout',  [AuthController::class, "logout"])->name('logout.logout');
- });
+Route::get('/test', [ProductController::class, 'test']);
