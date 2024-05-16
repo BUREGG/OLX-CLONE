@@ -23,6 +23,7 @@ class ProductController extends Controller
         $products = Product::where('is_active', true)->with('images', 'product_users')->get();
         return view('product', ['products' => $products]);
     }
+
     public function category($id)
     {
         $category = Category::where('id', $id)->with('children')->firstOrFail();
