@@ -188,6 +188,6 @@ class ProductController extends Controller
             })
             ->with('images', 'product_users')
             ->get();
-            return view('category', ['products' => $products,'id'=>$id]);
-        }
+        return view('category', ['products' => $products, 'id' => $id]);
+    }
 }
