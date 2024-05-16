@@ -65,6 +65,7 @@ Route::get('/filteredsearch', [ProductController::class, 'searchFiltr'])->name('
 
 
 
+
 Route::group(['middleware' => ['role:super-admin|admin']], function () {
 
     Route::resource('permissions', App\Http\Controllers\PermissionController::class);

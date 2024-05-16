@@ -23,6 +23,7 @@ class ProductController extends Controller
         $products = Product::where('is_active', true)->with('images', 'product_users')->get();
         return view('product', ['products' => $products]);
     }
+
     public function category($id)
     {
         $category = Category::where('id', $id)->with('children')->firstOrFail();
@@ -160,7 +161,6 @@ class ProductController extends Controller
         return redirect('myaccount')->with('status', 'ogłoszenie zaktualizowane');
     }
 
-
     public function destroy(Product $product)
     {
         $product->delete();
@@ -214,4 +214,26 @@ class ProductController extends Controller
             ->get();
         return view('search', ['products' => $products]);
     }
+
+    public function filtr(Request $request)
+    {
+        $products = Product::filter()
+            ->when($request->filled('lowestprice') && $request->filled('highestprice'), function ($query) use ($request) {
+                return $query->whereBetween('price', [$request->lowestprice, $request->highestprice]);
+            })
+            ->with('images', 'product_users')
+            ->get();
+        return view('product', ['products' => $products]);
+    }
+
+    public function filtrCategory(Request $request, $id)
+    {
+        $products = Product::filter()->where('category_id', $id)
+            ->when($request->filled('lowestprice') && $request->filled('highestprice'), function ($query) use ($request) {
+                return $query->whereBetween('price', [$request->lowestprice, $request->highestprice]);
+            })
+            ->with('images', 'product_users')
+            ->get();
+            return view('category', ['products' => $products,'id'=>$id]);
+        }
 }
