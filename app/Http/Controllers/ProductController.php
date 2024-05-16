@@ -22,6 +22,7 @@ class ProductController extends Controller
         $products = Product::with('images', 'product_users')->get();
         return view('product', ['products' => $products]);
     }
+
     public function category($id)
     {
         $category = Category::where('id', $id)->with('children')->firstOrFail();
@@ -37,6 +38,7 @@ class ProductController extends Controller
         $products = Product::with('images')->get();
         return view('myaccount', ['products' => $products],);
     }
+
     public function myfavorite()
     {
         $products = Product::all();
@@ -56,8 +58,9 @@ class ProductController extends Controller
         $product = Product::where('id', $id)->firstOrFail();
         $user_id = auth()->id();
         ProductUser::firstOrCreate(['product_id' => $product->id, 'user_id' => $user_id]);
-        return redirect('/product');
+        return redirect()->back();
     }
+
     public function deletefavorite($id)
     {
         $product = ProductUser::where('user_id', Auth::user()->id)->where('product_id', $id)->first();
@@ -107,9 +110,6 @@ class ProductController extends Controller
         return redirect('myaccount');
     }
 
-
-
-
     public function show(string $id)
     {
     }
@@ -119,7 +119,7 @@ class ProductController extends Controller
     {
         return view('editproduct', [
             'product' => $product
-           
+
         ]);
     }
 
@@ -152,10 +152,7 @@ class ProductController extends Controller
 
         
         return redirect('myaccount')->with('status', 'ogłoszenie zaktualizowane');
-
-
     }
-
 
     public function destroy(Product $product)
     {
@@ -166,10 +163,31 @@ class ProductController extends Controller
 
     public function refresh(Product $product){
         $formattedDateTime = Carbon::now()->format('Y-m-d H:i:s');
-        
-        $product->update(['refresh' => $formattedDateTime]);
-    
-        return redirect('myaccount')->with('status', 'Ogłoszenie odświeżone');
 
+        $product->update(['refresh' => $formattedDateTime]);
+
+        return redirect('myaccount')->with('status', 'Ogłoszenie odświeżone');
     }
+
+    public function filtr(Request $request)
+    {
+        $products = Product::filter()
+            ->when($request->filled('lowestprice') && $request->filled('highestprice'), function ($query) use ($request) {
+                return $query->whereBetween('price', [$request->lowestprice, $request->highestprice]);
+            })
+            ->with('images', 'product_users')
+            ->get();
+        return view('product', ['products' => $products]);
+    }
+
+    public function filtrCategory(Request $request, $id)
+    {
+        $products = Product::filter()->where('category_id', $id)
+            ->when($request->filled('lowestprice') && $request->filled('highestprice'), function ($query) use ($request) {
+                return $query->whereBetween('price', [$request->lowestprice, $request->highestprice]);
+            })
+            ->with('images', 'product_users')
+            ->get();
+            return view('category', ['products' => $products,'id'=>$id]);
+        }
 }

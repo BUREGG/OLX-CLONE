@@ -4,8 +4,23 @@
         <div class="alert alert-danger mt-2">{{ Session::get('error') }}
         </div>
     @endif
+    <?php
+    $url = Request::url();
+    $parts = explode('/', $url);
+    $id = end($parts);
+    ?>
+    <form action="{{ route('filtrcategory',['id'=>$id])}}">
+        <div class="mb-3">
+            <label for="">Cena od:</label>
+            <input type="text" name="lowestprice" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label for="">Cena do:</label>
+            <input type="text" name="highestprice" class="form-control" required />
+        </div>
+        <button type="submit">Zastosuj</button>
+    </form>
     <table class="table table-bordered table-striped">
-
         <tbody>
             <?php
             $items = $products;
