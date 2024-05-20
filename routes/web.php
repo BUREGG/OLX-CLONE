@@ -49,10 +49,8 @@ Route::get('category/{id}/filtr', [ProductController::class, 'filtrCategory'])->
 Route::get('fiteredproducts', [ProductController::class, 'filtr'])->name('filtr');
 Route::post('/addfavorite/{id}', [ProductController::class, "favorite"])->name("addfavorite");
 Route::post('/deletefavorite/{id}', [ProductController::class, "deletefavorite"])->name("deletefavorite");
-Route::get('api/products', [\App\Http\Controllers\Api\ProductController::class, 'index']); 
-Route::get('api/products/{product}', [\App\Http\Controllers\Api\ProductController::class, 'show']); 
-
-
+Route::get('/search', [ProductController::class, 'search'])->name('products.search');
+Route::get('/filteredsearch', [ProductController::class, 'searchfiltr'])->name('products.searchfiltr');
 
 
 

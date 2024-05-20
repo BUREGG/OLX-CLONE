@@ -62,22 +62,24 @@
                         {{ $product->address }}
 
                     <td>
-                        @php
-                            $is_favorite = $product->product_users
-                                ->where('user_id', Auth::user()->id)
-                                ->contains('product_id', $product->id);
-                        @endphp
+                        @if (auth()->check())
+                            @php
+                                $is_favorite = $product->product_users
+                                    ->where('user_id', Auth::user()->id)
+                                    ->contains('product_id', $product->id);
+                            @endphp
 
-                        @if ($is_favorite)
-                            <form action="{{ route('deletefavorite', ['id' => $product->id]) }}" method="POST">
-                                @csrf
-                                <button type="submit">Usuń z ulubionych</button>
-                            </form>
-                        @else
-                            <form action="{{ route('addfavorite', ['id' => $product->id]) }}" method="POST">
-                                @csrf
-                                <button type="submit">Dodaj do ulubionych</button>
-                            </form>
+                            @if ($is_favorite)
+                                <form action="{{ route('deletefavorite', ['id' => $product->id]) }}" method="POST">
+                                    @csrf
+                                    <button type="submit">Usuń z ulubionych</button>
+                                </form>
+                            @else
+                                <form action="{{ route('addfavorite', ['id' => $product->id]) }}" method="POST">
+                                    @csrf
+                                    <button type="submit">Dodaj do ulubionych</button>
+                                </form>
+                            @endif
                         @endif
                     </td>
             @endforeach

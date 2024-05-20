@@ -190,4 +190,21 @@ class ProductController extends Controller
             ->get();
         return view('category', ['products' => $products, 'id' => $id]);
     }
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        $products = Product::where('name', 'like', "%$search%")->get();
+
+        return view('search', ['products' => $products]);
+    }
+    public function searchfiltr(Request $request)
+    {
+        $products = Product::filter()
+            ->when($request->filled('lowestprice') && $request->filled('highestprice'), function ($query) use ($request) {
+                return $query->whereBetween('price', [$request->lowestprice, $request->highestprice]);
+            })
+            ->with('images', 'product_users')
+            ->get();
+        return view('search', ['products' => $products]);
+    }
 }
