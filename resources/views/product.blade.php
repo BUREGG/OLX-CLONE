@@ -17,7 +17,7 @@
         <button type="submit" class="btn btn-primary">Zastosuj</button>
     </form>
     <h6 style="margin-top:3px">Sortowanie:</h6>
-    <form>
+    <form action="{{ route('product.display') }}">
         <select name="sort" id="" class="form control input-sm" style="margin-bottom:10px">
             <option value="">Wybierz opcję</option>
             <option value="ascending">Od najtanszych</option>
@@ -62,28 +62,33 @@
                     </td>
                     <td style="vertical-align: bottom;">Dodano: {{ $item->refresh->format('Y-m-d H:i') }} Lokalizacja:
                         {{ $item->address }}
-                    <td>
-                        @if (auth()->check())
-                        @php
-                            $is_favorite = $item->product_users
-                                ->where('user_id', Auth::user()->id)
-                                ->contains('product_id', $item->id);
-                        @endphp
+                        <td>
+                            @if (auth()->check())
+                                @php
+                                    $is_favorite = $item->product_users
+                                        ->where('user_id', Auth::user()->id)
+                                        ->contains('product_id', $item->id);
+                                @endphp
 
-                        @if ($is_favorite)
-                            <form action="{{ route('deletefavorite', ['id' => $item->id]) }}" method="POST">
-                                @csrf
-                                <button type="submit">Usuń z ulubionych</button>
-                            </form>
-                        @else
-                            <form action="{{ route('addfavorite', ['id' => $item->id]) }}" method="POST">
-                                @csrf
-                                <button type="submit">Dodaj do ulubionych</button>
-                            </form>
-                        @endif
-                        @endif
-                    </td>
+                                @if ($is_favorite)
+                                    <form action="{{ route('deletefavorite', ['id' => $item->id]) }}" method="POST">
+                                        @csrf
+                                        <button type="submit">Usuń z ulubionych</button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('addfavorite', ['id' => $item->id]) }}" method="POST">
+                                        @csrf
+                                        <button type="submit">Dodaj do ulubionych</button>
+                                    </form>
+                                @endif
+                            @endif
+                        </td>
+                     
             @endforeach
+
         </tbody>
     </table>
+
+
+    {{-- {{$products->links('pagination::bootstrap-4')}} --}}
 @endsection

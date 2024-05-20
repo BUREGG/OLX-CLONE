@@ -44,6 +44,16 @@
                                 <button type="submit" class="btn btn-success mx-2">Odśwież</button>
                             </form>
                         </td>
+                        <td>
+                            <form action="{{ route('product.status', $item->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="btn {{ $item->is_active ? 'btn-danger' : 'btn-success' }}">
+                                    {{ $item->is_active ? 'Nieaktywne' : 'Aktywne' }}
+                                </button>
+                            </form>
+                            
+                        </td>
                 @endif
             @endforeach
         </tbody>

@@ -14,22 +14,21 @@ use App\Services\GeoCodeService;
 use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Pagination\Paginator;
 
 class ProductController extends Controller
 {
     public function DisplayAllProduct()
     {
-        $products = Product::with('images', 'product_users')->get();
+        $products = Product::where('is_active', true)->with('images', 'product_users')->get();
         return view('product', ['products' => $products]);
     }
-
     public function category($id)
     {
         $category = Category::where('id', $id)->with('children')->firstOrFail();
         $categoryId = $category->children->pluck('id')->toArray();
         $categoryId[] = $category->id;
-        $products = Product::whereIn('category_id', $categoryId)->get();
-
+        $products = Product::whereIn('category_id', $categoryId)->where('is_active', true)->get();
         return view('category', ['products' => $products]);
     }
 
@@ -68,6 +67,14 @@ class ProductController extends Controller
             $product->delete();
         }
         return redirect()->back();
+    }
+    public function status($id)
+    {
+        $product = Product::where('id', $id)->firstOrFail();
+        $product->is_active = !$product->is_active;
+        $product->update();
+
+        return redirect()->back()->with('status', 'product status updated!');
     }
 
     public function store(Request $request, GeoCodeService $geoCodeService)
