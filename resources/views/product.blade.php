@@ -63,6 +63,7 @@
                     <td style="vertical-align: bottom;">Dodano: {{ $item->refresh->format('Y-m-d H:i') }} Lokalizacja:
                         {{ $item->address }}
                     <td>
+                        @if (auth()->check())
                         @php
                             $is_favorite = $item->product_users
                                 ->where('user_id', Auth::user()->id)
@@ -79,6 +80,7 @@
                                 @csrf
                                 <button type="submit">Dodaj do ulubionych</button>
                             </form>
+                        @endif
                         @endif
                     </td>
                     <td style="vertical-align: bottom;">Dodano: {{ $item->refresh->format('Y-m-d H:i') }} Lokalizacja:
