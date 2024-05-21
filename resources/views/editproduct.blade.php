@@ -14,7 +14,7 @@
         </div>
         <div class="mb-3">
             <label for="">Opis</label>
-            <input type="text" name="description" value="{{ $product->description }}" class="form-control" />
+            <input type="text" name="description" value="{!! $product->description !!}" class="form-control" />
         </div>
         <div class="mb-3">
             <label for="">Cena</label>

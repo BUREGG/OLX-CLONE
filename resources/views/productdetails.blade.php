@@ -43,7 +43,7 @@
             <div class="ogloszenie">
 
                 <h2>Cena: {{ $product->price }}</h2>
-                <p>Opis produktu: {{ $product->description }}</p>
+                <p>Opis produktu: {!! $product->description !!}</p>
                 <p>Lokalizacja: {{ $product->address }}</p>
                 @if (auth()->check())
                     <p>Kontakt: {{ $product->user->phone_number }}</a></p>
