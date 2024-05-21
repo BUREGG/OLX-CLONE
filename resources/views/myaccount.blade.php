@@ -49,7 +49,7 @@
                                 @csrf
                                 @method('PUT')
                                 <button type="submit" class="btn {{ $item->is_active ? 'btn-danger' : 'btn-success' }}">
-                                    {{ $item->is_active ? 'Nieaktywne' : 'Aktywne' }}
+                                    {{ $item->is_active ? 'Dezaktywuj' : 'Aktywuj' }}
                                 </button>
                             </form>
                             

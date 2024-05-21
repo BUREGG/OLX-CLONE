@@ -40,8 +40,7 @@ class ProductController extends Controller
 
     public function myfavorite()
     {
-        $products = Product::all();
-        $products->load('images');
+        $products = Product::where('is_active',true)->with('images')->get();
         return view('favorite', ['products' => $products],);
     }
 
@@ -49,6 +48,7 @@ class ProductController extends Controller
     {
         $product = Product::where('id', $id)->with('user')->firstOrFail();
         $product->load('images');
+        $product->increment('views');
         return view('productdetails', ['product' => $product]);
     }
 

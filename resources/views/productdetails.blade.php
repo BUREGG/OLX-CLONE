@@ -54,5 +54,9 @@
                     <img src="{{ asset('storage/images/' . $item->image) }}" alt="Zdjęcie produktu">
                 @endforeach
             </div>
+            <a>Wyświetleń:{{$product->views}}</a>
+
         </div>
+
+    </body>
     @endsection
