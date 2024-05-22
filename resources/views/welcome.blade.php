@@ -20,6 +20,7 @@
     </div>
     <table class="table table-bordered table-striped">
     <tbody>
+        <h1 style="  text-align: center; margin-top:100px">Najczęściej przeglądane ogłoszenia</h1>
     <div>
         @foreach ($products as $item)
         <tr>

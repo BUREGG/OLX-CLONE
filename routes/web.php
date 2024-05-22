@@ -4,7 +4,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GetCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AllproductController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChartController;
 use App\Http\Controllers\GeoCodeController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\PermissionController;
@@ -38,7 +40,9 @@ Route::middleware("auth")->group(function () {
     Route::put('/updateproduct/{id}',[ProductController::class, "update"])->name("product.update");
     Route::put('/refresh/{id}',[ProductController::class, "refresh"])->name("product.refresh");
     Route::put('status/{id}', [ProductController::class, "status"])->name('product.status');
-
+    Route::get('editprofile', [App\Http\Controllers\UserController::class, "editprofile"])->name('editprofile');
+    Route::put('editprofilepost', [App\Http\Controllers\UserController::class, "editprofilepost"])->name('editprofile.post');
+    Route::get('chart', [ChartController::class, "chart"])->name('chart');
 
 });
 Route::get('/', [CategoryController::class, 'getCategory'])->name("homepage");
