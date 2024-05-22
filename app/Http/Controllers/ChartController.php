@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
+use LaravelDaily\LaravelCharts\Classes\LaravelChart;
+
 use Illuminate\Http\Request;
 
 class ChartController extends Controller
