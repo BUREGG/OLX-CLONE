@@ -55,8 +55,10 @@ class ProductTest extends TestCase
     {
         $user = User::factory()->create();
         $this->actingAs($user);
-        $product = Product::factory()->create();
-        $response = $this->delete('/api/products/'. $product->id);
+        $product = Product::factory()->create([
+            'user_id' => $user->id,
+        ]);
+        $response = $this->delete('/api/product/'. $product->id);
        $response->assertStatus(204);
         $this->assertDatabaseMissing('products', [
             'id' =>$product->id,
@@ -66,11 +68,13 @@ class ProductTest extends TestCase
     {
         $user = User::factory()->create();
         $this->actingAs($user);
-        $product = Product::factory()->create();
+        $product = Product::factory()->create([
+            'user_id' => $user->id,
+        ]);
         $newData = [
             'name' => 'zmiana',
         ];
-        $response = $this->put('/api/products/'. $product->id, $newData);
+        $response = $this->put('/api/product/'. $product->id, $newData);
         $response->assertStatus(200);
         $this->assertDatabaseHas('products', [
             'id' => $user->id,

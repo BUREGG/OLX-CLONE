@@ -26,9 +26,7 @@ Route::get('lists/products', [\App\Http\Controllers\Api\ProductController::class
 Route::get('users', [\App\Http\Controllers\Api\UserController::class, 'index']);
 Route::post('users', [\App\Http\Controllers\Api\UserController::class, 'store']);
 Route::put('product/{product}', [\App\Http\Controllers\Api\ProductController::class, 'update'])->middleware('auth:sanctum'); 
-Route::put('products/{product}', [\App\Http\Controllers\Api\ProductController::class, 'updateForTest'])->middleware('auth:sanctum'); 
 Route::delete('product/{product}', [\App\Http\Controllers\Api\ProductController::class, 'destroy'])->middleware('auth:sanctum');
-Route::delete('products/{product}', [\App\Http\Controllers\Api\ProductController::class, 'destroyForTest'])->middleware('auth:sanctum');
 Route::post('login',[\App\Http\Controllers\Api\AuthController::class, 'login'] );
 Route::get('myproducts', [\App\Http\Controllers\Api\ProductController::class, 'myProducts'])->middleware('auth:sanctum');
 Route::post('createproduct', [\App\Http\Controllers\Api\ProductController::class, 'store'])->middleware('auth:sanctum');
