@@ -76,6 +76,24 @@ class ProductController extends Controller
             return new ProductResource($product);
         }
     }
+    public function updateForTest(Product $product, UpdateProductRequest $request)
+
+    {
+        $userId = Auth::id();
+        if($request->user()->hasRole('super-admin'))
+        {
+           
+            $product->update($request->all());
+            return new ProductResource($product);
+        
+     
+        }else
+        {
+            
+        $product->update($request->all());
+        return new ProductResource($product);
+        }
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -87,17 +105,42 @@ class ProductController extends Controller
             $product->delete();
             return response()->json([
                 'Usunięto produkt o id:' => $product->id
-            ]);
-        } else if ($userId != $product->user_id) {
+            ],
+            204); 
+         }else if ($userId!=$product->user_id){
             return response()->json([
                 'Nie mozna usunac nie swojego produktu'
-            ]);
-        } else {
+            ],
+            204);
+        }
+        else
+        {
+        $product->delete();
+        return response()->json([
+            'Usunięto produkt o id:' => $product->id
+        ],
+    204); 
+    }
+
+    }
+    public function destroyForTest(Request $request, Product $product)
+    {
+        $userId = Auth::id();
+        if($request->user()->hasRole('super-admin')){
             $product->delete();
             return response()->json([
                 'Usunięto produkt o id:' => $product->id
-            ]);
-        }
+            ],
+            204); 
+        }      
+        else
+        {
+        $product->delete();
+        return response()->json([
+            'Usunięto produkt o id:' => $product->id
+        ],
+    204); 
+    } 
     }
     public function list()
     {

@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->integer('price');
-            $table->string('latitude')->nullable();
-            $table->string('longitude')->nullable();
+            $table->float('latitude')->nullable();
+            $table->float('longitude')->nullable();
             $table->timestamp('refresh')->format('Y-m-d H:i:s')->nullable();
             $table->string('address')->nullable();
             $table->timestamps();

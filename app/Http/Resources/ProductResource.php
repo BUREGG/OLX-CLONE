@@ -26,7 +26,9 @@ class ProductResource extends JsonResource
             'refresh' => $this->refresh,
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
-            'address' => $this->address
+            'address' => $this->address,
+            'created_at'=> $this->created_at,
+            'updated_at'=> $this->updated_at
         ];
         
     }
