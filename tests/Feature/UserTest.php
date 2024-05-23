@@ -26,4 +26,16 @@ class UserTest extends TestCase
             'products' => [],
         ]);
     }
+    public function test_login()
+    {
+        $user = User::factory()->create([
+            'password' => bcrypt($password = 'i-love-laravel'),
+        ]);
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => $password,
+        ]);
+        $response->assertRedirect('/');
+        $this->assertAuthenticatedAs($user);
+    }
 }

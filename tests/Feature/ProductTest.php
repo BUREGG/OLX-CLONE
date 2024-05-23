@@ -81,4 +81,23 @@ class ProductTest extends TestCase
             'name' => $newData
         ]);
     }
+    public function test_api_product_show()
+    {
+        $product = Product::factory()->create();
+        $response = $this->getJson('/api/products/'. $product->id);
+        $response->assertJsonFragment([
+            'id' => $product->id,
+            'name' => $product->name,
+            'description' => $product->description,
+            'price' => $product->price,
+            'latitude' => $product->latitude,
+            'longitude' => $product->longitude,
+            'refresh' => $product->refresh->toJSON(),
+            'address' => $product->address,
+            'category_id' => $product->category_id,
+            'user_id' => $product->user_id,
+            'created_at' => $product->created_at->toJSON(),
+            'updated_at' => $product->updated_at->toJSON(),
+        ]);
+    }
 }
