@@ -1,26 +1,48 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html>
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
+<head>
+    <title>Laravel Charts</title>
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
 
-                <div class="card-body">
-
-                    <h1>{{ $chart1->options['chart_title'] }}</h1>
-                    {!! $chart1->renderHtml() !!}
-
-                </div>
-
-            </div>
-        </div>
+<body>
+    <div>
+        <h1>Wyświetlenia dla produktu</h1>
+        <canvas id="productsChart"></canvas>
     </div>
-</div>
-@endsection
 
-@section('javascript')
-{!! $chart1->renderChartJsLibrary() !!}
-{!! $chart1->renderJs() !!}
-@endsection
+    <script>
+        var products = @json($products);
+        var labels = products.map(function(product) {
+            return product.name;
+        });
+        var data = products.map(function(product) {
+            return product.views;
+        });
+        var ctx = document.getElementById('productsChart').getContext('2d');
+        var productsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Liczba wyświetleń',
+                    data: data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
