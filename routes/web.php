@@ -49,13 +49,6 @@ Route::middleware("auth")->group(function () {
     Route::get('editprofile', [App\Http\Controllers\UserController::class, "editProfile"])->name('editprofile');
     Route::put('editprofilepost', [App\Http\Controllers\UserController::class, "editProfilePost"])->name('editprofile.post');
     Route::get('chart', [ChartController::class, "chart"])->name('chart');
-    Route::get('/editproduct/{id}',[ProductController::class, "edit"])->name("product.edit");
-    Route::put('/updateproduct/{id}',[ProductController::class, "update"])->name("product.update");
-    Route::put('/refresh/{id}',[ProductController::class, "refresh"])->name("product.refresh");
-    Route::put('status/{id}', [ProductController::class, "status"])->name('product.status');
-    Route::get('editprofile', [App\Http\Controllers\UserController::class, "editprofile"])->name('editprofile');
-    Route::put('editprofilepost', [App\Http\Controllers\UserController::class, "editprofilepost"])->name('editprofile.post');
-    Route::get('chart', [ChartController::class, "chart"])->name('chart');
 
 Route::get('/conversations', [ConversationController::class, 'index'])->name('conversations.index');
 Route::get('/conversations/{conversation}', [ConversationController::class, 'show'])->name('conversations.show');
