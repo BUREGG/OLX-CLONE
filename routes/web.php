@@ -10,6 +10,7 @@ use App\Http\Controllers\ChartController;
 use App\Http\Controllers\GeoCodeController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PusherController;
 use App\Models\Product;
 use App\Models\ProductUser;
 use App\Models\User;
@@ -50,6 +51,10 @@ Route::middleware("auth")->group(function () {
     Route::get('editprofile', [App\Http\Controllers\UserController::class, "editprofile"])->name('editprofile');
     Route::put('editprofilepost', [App\Http\Controllers\UserController::class, "editprofilepost"])->name('editprofile.post');
     Route::get('chart', [ChartController::class, "chart"])->name('chart');
+    Route::get('/chat', [PusherController::class, "index"])->name('chat');
+    Route::post('/broadcast', [PusherController::class, "broadcast"])->name('broadcast');
+    Route::post('/receive', [PusherController::class, "receive"])->name('receive');
+
 
 });
 Route::get('/', [CategoryController::class, 'getCategory'])->name("homepage");
