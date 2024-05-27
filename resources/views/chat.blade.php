@@ -18,7 +18,7 @@
             <div class="top">
                 <img src="{{ asset('js/3551739.jpg') }}" alt="Avatar" width="100" height="100">
                 <div>
-                    <p>Ross Edlin</p>
+                    <p>{{ Auth::user()->name }}</p>                    
                     <small>Online</small>
                 </div>
             </div>
