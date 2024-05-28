@@ -25,8 +25,7 @@ class ProductController extends Controller
     public function index()
     {
         // return Product::all();
-        return ProductResource::collection(Product::all()); 
-
+        return ProductResource::collection(Product::all());
     }
 
     /**
@@ -34,23 +33,19 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $userId=Auth::user()->id;
+        $userId = Auth::user()->id;
         $user = DB::table('users')->pluck('id');
-        $categoryId=$request->category_id;
+        $categoryId = $request->category_id;
         $category = DB::table('categories')->pluck('id');
-        if($user->contains($userId)&&($category->contains($categoryId)))
-        {
+        if ($user->contains($userId) && ($category->contains($categoryId))) {
+            $request->merge(['user_id' => $userId]);
             $product = Product::create($request->all());
-        return new ProductResource($product);
-           
-        }else
-        {
+            return new ProductResource($product);
+        } else {
             return response()->json([
                 'Nie ma uzytkownika lub kategorii o takim ID'
             ]);
         }
-        
-        
     }
 
     /**
@@ -69,19 +64,16 @@ class ProductController extends Controller
 
     {
         $userId = Auth::id();
-        if($request->user()->hasRole('super-admin'))
-        {
+        if ($request->user()->hasRole('super-admin')) {
             $product->update($request->all());
             return new ProductResource($product);
-        }
-        else if($userId!=$product->user_id){
+        } else if ($userId != $product->user_id) {
             return response()->json([
                 'Nie mozna zaktualizować nie swojego produktu'
             ]);
-        }else
-        {
-        $product->update($request->all());
-        return new ProductResource($product);
+        } else {
+            $product->update($request->all());
+            return new ProductResource($product);
         }
     }
 
@@ -91,24 +83,21 @@ class ProductController extends Controller
     public function destroy(Product $product, Request $request)
     {
         $userId = Auth::id();
-        if($request->user()->hasRole('super-admin')){
+        if ($request->user()->hasRole('super-admin')) {
             $product->delete();
             return response()->json([
                 'Usunięto produkt o id:' => $product->id
-            ]); 
-        }else if ($userId!=$product->user_id){
+            ]);
+        } else if ($userId != $product->user_id) {
             return response()->json([
                 'Nie mozna usunac nie swojego produktu'
             ]);
+        } else {
+            $product->delete();
+            return response()->json([
+                'Usunięto produkt o id:' => $product->id
+            ]);
         }
-        else
-        {
-        $product->delete();
-        return response()->json([
-            'Usunięto produkt o id:' => $product->id
-        ]); 
-    }
-
     }
     public function list()
     {
