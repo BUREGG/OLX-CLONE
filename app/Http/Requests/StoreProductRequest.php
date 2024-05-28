@@ -30,7 +30,7 @@ class StoreProductRequest extends FormRequest
             'latitude' => ['required'],
             'longitude' => ['required'],
             'address' => ['required'],
-            'user_id' => ['required'],
+            //'user_id' => ['required'],
             'category_id' => ['required'],
 
 

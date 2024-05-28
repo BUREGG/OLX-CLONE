@@ -29,4 +29,4 @@ Route::put('products/{product}', [\App\Http\Controllers\Api\ProductController::c
 Route::delete('products/{product}', [\App\Http\Controllers\Api\ProductController::class, 'destroy'])->middleware('auth:sanctum');
 Route::post('login',[\App\Http\Controllers\Api\AuthController::class, 'login'] );
 Route::get('myproducts', [\App\Http\Controllers\Api\ProductController::class, 'myProducts'])->middleware('auth:sanctum');
-Route::post('createproduct', [\App\Http\Controllers\Api\ProductController::class, 'store']);
+Route::post('createproduct', [\App\Http\Controllers\Api\ProductController::class, 'store'])->middleware('auth:sanctum');

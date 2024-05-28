@@ -34,11 +34,11 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $user_id=$request->user_id;
+        $userId=Auth::user()->id;
         $user = DB::table('users')->pluck('id');
-        $category_id=$request->category_id;
+        $categoryId=$request->category_id;
         $category = DB::table('categories')->pluck('id');
-        if($user->contains($user_id)&&($category->contains($category_id)))
+        if($user->contains($userId)&&($category->contains($categoryId)))
         {
             $product = Product::create($request->all());
         return new ProductResource($product);
