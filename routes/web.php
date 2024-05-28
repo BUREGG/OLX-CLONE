@@ -1,14 +1,17 @@
 <?php
 
 use App\Events\Message;
+use App\Charts\chart;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GetCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AllproductController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\BotController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\GeoCodeController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\MessageController;
