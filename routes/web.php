@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AllproductController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\BotController;
+use App\Http\Controllers\BotManController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\ConversationController;
@@ -99,3 +100,6 @@ Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name(
 Route::post('/forgot-password', [AuthController::class, 'forgotPasswordPost'])->name('password.post');
 Route::get('/reset-password/{token}', [AuthController::class, 'resetPassword'])->name('password.reset');
 Route::post('/reset-password', [AuthController::class, 'resetPasswordPost'])->name('password.resetpost');
+
+
+Route::match(['get', 'post'], 'botman', [BotManController::class, 'handle']);
