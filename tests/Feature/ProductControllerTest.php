@@ -4,13 +4,14 @@ namespace Tests\Feature;
 
 use App\Models\Product;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 use function PHPUnit\Framework\assertSame;
 
-class ProductTest extends TestCase
+class ProductControllerTest extends TestCase
 {
     use RefreshDatabase;
     /**
@@ -18,22 +19,26 @@ class ProductTest extends TestCase
      */
     public function test_api_returns_products_list()
     {
-        $product = Product::factory()->count(10)->create();
+        $products = Product::factory(10)->create(['created_at' => now()->format('Y-m-d H:i'), 'updated_at' => now()->format('Y-m-d H:i'), 'refresh' => now()->format('Y-m-d H:i')]);
         $response = $this->getJson('/api/products');
-        $response->assertJsonFragment([
-            'id' => $product->id,
-            'name' => $product->name,
-            'description' => $product->description,
-            'price' => $product->price,
-            'latitude' => $product->latitude,
-            'longitude' => $product->longitude,
-            'refresh' => $product->refresh->toJSON(),
-            'address' => $product->address,
-            'category_id' => $product->category_id,
-            'user_id' => $product->user_id,
-            'created_at' => $product->created_at->toJSON(),
-            'updated_at' => $product->updated_at->toJSON(),
-        ]);
+
+        foreach ($products as $product) {
+            $response->assertJsonFragment([
+                'id' => $product->id,
+                'name' => $product->name,
+                'description' => $product->description,
+                'price' => $product->price,
+                'latitude' => $product->latitude,
+                'longitude' => $product->longitude,
+                'refresh' => $product->refresh->format('Y-m-d H:i'),
+                'address' => $product->address,
+                'category_id' => $product->category_id,
+                'user_id' => $product->user_id,
+                'created_at' => $product->created_at->format('Y-m-d H:i'),
+                'updated_at' => $product->updated_at->format('Y-m-d H:i'),
+            ]);
+        }
+        $response->assertStatus(200);
         $this->assertDatabaseCount('products', 10);
     }
     /**
@@ -41,30 +46,36 @@ class ProductTest extends TestCase
      */
     public function test_api_product_store_successfull()
     {
-        $product = Product::factory()->make([
-            // 'created_at'=>now(),
-            // 'updated_at'=>now(),
-            ])
-            ->toArray();
+        $product = Product::factory()->make(['created_at' => now()->format('Y-m-d H:i'), 'updated_at' => now()->format('Y-m-d H:i'), 'refresh' => now()->format('Y-m-d H:i')])->toArray();
         $user = User::factory()->create();
         $this->actingAs($user);
-        //dump($product);
         $response = $this->postJson('/api/createproduct', $product);
         $response->assertStatus(201);
-        // $this->assertDatabaseHas('products', [
-        //     'name' => $product['name'],
-        //     'description' => $product['description'],
-        //     'price' => $product['price'],
-        //     'latitude' => $product['latitude'],
-        //     'longitude' => $product['longitude'],
-        //     'refresh' => $product['refresh'],
-        //     'address' => $product['address'],
-        //     'category_id' => $product['category_id'],
-        //     'user_id' => $user->id,
-        //   //  'created_at' => $product['created_at'],
-        // //  'updated_at' => $product['updated_at'],
-        // ]);
-       $this->assertDatabaseCount('products', 1);
+        $this->assertDatabaseCount('products', 1);
+        $response->assertJsonFragment([
+            'name' => $product['name'],
+            'description' => $product['description'],
+            'price' => $product['price'],
+            'latitude' => $product['latitude'],
+            'longitude' => $product['longitude'],
+            'refresh' => (new Carbon($product['refresh']))->format('Y-m-d H:i'),
+            'address' => $product['address'],
+            'category_id' => $product['category_id'],
+            'user_id' => $user->id,
+            'created_at' => (new Carbon($product['created_at']))->setTimezone('Europe/Warsaw')->format('Y-m-d H:i'),
+            'updated_at' => (new Carbon($product['updated_at']))->setTimezone('Europe/Warsaw')->format('Y-m-d H:i'),
+        ]);
+        $this->assertDatabaseHas('products', [
+            'name' => $product['name'],
+            'description' => $product['description'],
+            'price' => $product['price'],
+            'latitude' => $product['latitude'],
+            'longitude' => $product['longitude'],
+            'refresh' => (new Carbon($product['refresh']))->format('Y-m-d H:i:s'),
+            'address' => $product['address'],
+            'category_id' => $product['category_id'],
+            'user_id' => $user->id,
+        ]);
     }
     /**
      * @test
@@ -128,7 +139,7 @@ class ProductTest extends TestCase
      */
     public function test_api_product_show()
     {
-        $product = Product::factory()->create();
+        $product = Product::factory()->create(['created_at' => now()->format('Y-m-d H:i'), 'updated_at' => now()->format('Y-m-d H:i'), 'refresh' => now()->format('Y-m-d H:i')]);
         $response = $this->getJson('/api/products/' . $product->id);
         $response->assertJsonFragment([
             'id' => $product->id,
@@ -137,12 +148,12 @@ class ProductTest extends TestCase
             'price' => $product->price,
             'latitude' => $product->latitude,
             'longitude' => $product->longitude,
-            'refresh' => $product->refresh->toJSON(),
+            'refresh' => $product->refresh->format('Y-m-d H:i'),
             'address' => $product->address,
             'category_id' => $product->category_id,
             'user_id' => $product->user_id,
-            'created_at' => $product->created_at->toJSON(),
-            'updated_at' => $product->updated_at->toJSON(),
+            'created_at' => $product->created_at->format('Y-m-d H:i'),
+            'updated_at' => $product->updated_at->format('Y-m-d H:i'),
         ]);
     }
 }
