@@ -33,7 +33,6 @@ class StoreProductRequest extends FormRequest
             //'user_id' => ['required'],
             'category_id' => ['required'],
 
-
         ];
     }
 }
