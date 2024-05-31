@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\Message;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GetCategoryController;
 use App\Http\Controllers\ProductController;
@@ -14,8 +15,10 @@ use App\Http\Controllers\PusherController;
 use App\Models\Product;
 use App\Models\ProductUser;
 use App\Models\User;
+use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,8 +57,14 @@ Route::middleware("auth")->group(function () {
     Route::get('/chat', [PusherController::class, "index"])->name('chat');
     Route::post('/broadcast', [PusherController::class, "broadcast"])->name('broadcast');
     Route::post('/receive', [PusherController::class, "receive"])->name('receive');
-
-
+    Route::post('send-message',function (Request $request){
+        event(new Message($request->username, $request->message));
+        return ['success' => true];
+    })->name('send-message');
+    Route::get('/testchat', function () {
+        return view('testchat');
+    });
+    
 });
 Route::get('/', [CategoryController::class, 'getCategory'])->name("homepage");
 Route::get('/product', [ProductController::class, 'displayAllProduct'])->name('product.display');
@@ -67,8 +76,6 @@ Route::post('/addfavorite/{id}', [ProductController::class, "favorite"])->name("
 Route::post('/deletefavorite/{id}', [ProductController::class, "deleteFavorite"])->name("deletefavorite");
 Route::get('/search', [ProductController::class, 'search'])->name('products.search');
 Route::get('/filteredsearch', [ProductController::class, 'searchFiltr'])->name('products.searchfiltr');
-
-
 
 
 
