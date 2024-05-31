@@ -20,13 +20,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('products', [\App\Http\Controllers\Api\ProductController::class, 'index']); // product_list
-Route::get('products/{product}', [\App\Http\Controllers\Api\ProductController::class, 'show']); 
-Route::get('lists/products', [\App\Http\Controllers\Api\ProductController::class, 'list']) ;
-Route::get('users', [\App\Http\Controllers\Api\UserController::class, 'index']);
-Route::post('users', [\App\Http\Controllers\Api\UserController::class, 'store']);
-Route::put('products/{product}', [\App\Http\Controllers\Api\ProductController::class, 'update'])->middleware('auth:sanctum'); 
-Route::delete('products/{product}', [\App\Http\Controllers\Api\ProductController::class, 'destroy'])->middleware('auth:sanctum');
-Route::post('login',[\App\Http\Controllers\Api\AuthController::class, 'login'] );
-Route::get('myproducts', [\App\Http\Controllers\Api\ProductController::class, 'myProducts'])->middleware('auth:sanctum');
-Route::post('createproduct', [\App\Http\Controllers\Api\ProductController::class, 'store'])->middleware('auth:sanctum');
+Route::get('products', [\App\Http\Controllers\Api\ProductController::class, 'index'])->name('api.products');
+Route::get('products/{product}', [\App\Http\Controllers\Api\ProductController::class, 'show'])->name('api.show.product');
+Route::get('lists/products', [\App\Http\Controllers\Api\ProductController::class, 'list'])->name('api.list.products');
+Route::get('users', [\App\Http\Controllers\Api\UserController::class, 'index'])->name('api.user.product');
+Route::post('users', [\App\Http\Controllers\Api\UserController::class, 'store'])->name('api.create.user');
+Route::put('products/{product}', [\App\Http\Controllers\Api\ProductController::class, 'update'])->middleware('auth:sanctum')->name('api.update.product'); 
+Route::delete('products/{product}', [\App\Http\Controllers\Api\ProductController::class, 'destroy'])->middleware('auth:sanctum')->name('api.delete.product');
+Route::post('login',[\App\Http\Controllers\Api\AuthController::class, 'login'] )->name('login');
+Route::get('myproducts', [\App\Http\Controllers\Api\ProductController::class, 'myProducts'])->middleware('auth:sanctum')->name('api.my.products');
+Route::post('createproduct', [\App\Http\Controllers\Api\ProductController::class, 'store'])->middleware('auth:sanctum')->name('api.create.product');

@@ -20,8 +20,8 @@ class ProductControllerTest extends TestCase
     public function test_api_returns_products_list()
     {
         $products = Product::factory(10)->create(['created_at' => now()->format('Y-m-d H:i'), 'updated_at' => now()->format('Y-m-d H:i'), 'refresh' => now()->format('Y-m-d H:i')]);
-        $response = $this->getJson('/api/products');
-
+        $response = $this->getJson(route('api.list.products'))
+        ->assertStatus(200);
         foreach ($products as $product) {
             $response->assertJsonFragment([
                 'id' => $product->id,
@@ -38,7 +38,6 @@ class ProductControllerTest extends TestCase
                 'updated_at' => $product->updated_at->format('Y-m-d H:i'),
             ]);
         }
-        $response->assertStatus(200);
         $this->assertDatabaseCount('products', 10);
     }
     /**
@@ -49,8 +48,8 @@ class ProductControllerTest extends TestCase
         $product = Product::factory()->make(['created_at' => now()->format('Y-m-d H:i'), 'updated_at' => now()->format('Y-m-d H:i'), 'refresh' => now()->format('Y-m-d H:i')])->toArray();
         $user = User::factory()->create();
         $this->actingAs($user);
-        $response = $this->postJson('/api/createproduct', $product);
-        $response->assertStatus(201);
+        $response = $this->postJson(route('api.create.product'), $product)
+        ->assertStatus(201);
         $this->assertDatabaseCount('products', 1);
         $response->assertJsonFragment([
             'name' => $product['name'],
@@ -80,11 +79,11 @@ class ProductControllerTest extends TestCase
     /**
      * @test
      */
-    public function test_api_product_store_unsuccessful()
+    public function test_api_product_store_unsuccessful_user_cant_store_product_without_description()
     {
         $user = User::factory()->create();
         $this->actingAs($user);
-        $response = $this->postJson('/api/createproduct', [
+        $product=[
             'name' => 'test',
             'price' => 100,
             'user_id' => $user->id,
@@ -93,8 +92,9 @@ class ProductControllerTest extends TestCase
             'latitude' => 50.30,
             'longitude' => 30.30,
             'address' => 'Kielce'
-        ]);
-        $response->assertStatus(422);
+        ];
+        $response = $this->postJson(route('api.create.product'),$product )
+        ->assertStatus(422);
     }
     /**
      * @test
@@ -106,8 +106,9 @@ class ProductControllerTest extends TestCase
         $product = Product::factory()->create([
             'user_id' => $user->id,
         ]);
-        $response = $this->delete('/api/products/' . $product->id);
-        $response->assertStatus(204);
+        $response = $this->deleteJson(route('api.delete.product',['product' => $product->id]))
+        ->assertStatus(204)
+        ;
         $this->assertDatabaseMissing('products', [
             'id' => $product->id,
         ]);
@@ -126,8 +127,8 @@ class ProductControllerTest extends TestCase
         $newData = [
             'name' => 'zmiana',
         ];
-        $response = $this->put('/api/products/' . $product->id, $newData);
-        $response->assertStatus(200);
+        $response = $this->put(route('api.update.product',['product' => $product->id]),$newData)
+        ->assertStatus(200);
         $this->assertDatabaseHas('products', [
             'id' => $user->id,
             'name' => $newData
@@ -140,7 +141,8 @@ class ProductControllerTest extends TestCase
     public function test_api_product_show()
     {
         $product = Product::factory()->create(['created_at' => now()->format('Y-m-d H:i'), 'updated_at' => now()->format('Y-m-d H:i'), 'refresh' => now()->format('Y-m-d H:i')]);
-        $response = $this->getJson('/api/products/' . $product->id);
+        $response = $this->getJson(route('api.show.product', ['product'=>$product->id]))
+        ->assertStatus(200);
         $response->assertJsonFragment([
             'id' => $product->id,
             'name' => $product->name,
