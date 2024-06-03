@@ -36,7 +36,7 @@
                     @if(auth()->check())
 
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('chat') ? 'fw-bold' : '' }}" href="{{ url('chat') }}">Wiadomosci</a>
+                        <a class="nav-link {{ request()->is('chat') ? 'fw-bold' : '' }}" href="{{ url('conversations') }}">Wiadomosci</a>
                     </li>
                     @endif
                     @if(auth()->check())

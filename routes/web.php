@@ -8,8 +8,10 @@ use App\Http\Controllers\AllproductController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChartController;
+use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\GeoCodeController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PusherController;
 use App\Models\Product;
@@ -64,7 +66,12 @@ Route::middleware("auth")->group(function () {
     Route::get('/testchat', function () {
         return view('testchat');
     });
-    
+Route::get('/conversations', [ConversationController::class, 'index'])->name('conversations.index');
+Route::get('/conversations/{conversation}', [ConversationController::class, 'show'])->name('conversations.show');
+Route::post('/conversations/{conversation}/messages', [ConversationController::class, 'storeMessage'])->name('messages.store');
+Route::post('/conversations', [ConversationController::class, 'create'])->name('conversations.create');
+Route::get('/conversations/start/{id}', [ConversationController::class, 'start'])->name('conversations.start');
+
 });
 Route::get('/', [CategoryController::class, 'getCategory'])->name("homepage");
 Route::get('/product', [ProductController::class, 'displayAllProduct'])->name('product.display');

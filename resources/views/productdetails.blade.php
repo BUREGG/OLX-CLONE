@@ -57,6 +57,7 @@
             <a>Wyświetleń:{{$product->views}}</a>
 
         </div>
+        <a href="{{ route('conversations.start', ['id' => $product->id]) }}">Napisz wiadomość</a>
 
     </body>
     @endsection
