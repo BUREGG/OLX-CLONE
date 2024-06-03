@@ -102,4 +102,4 @@ Route::get('/reset-password/{token}', [AuthController::class, 'resetPassword'])-
 Route::post('/reset-password', [AuthController::class, 'resetPasswordPost'])->name('password.resetpost');
 
 
-Route::match(['get', 'post'], 'botman', [BotManController::class, 'handle']);
+Route::match(['get', 'post'], '/botman', [BotManController::class, 'handle']);
