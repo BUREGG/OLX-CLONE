@@ -76,7 +76,6 @@ class ProductController extends Controller
             return new ProductResource($product);
         }
     }
-
     /**
      * Remove the specified resource from storage.
      */
@@ -87,17 +86,23 @@ class ProductController extends Controller
             $product->delete();
             return response()->json([
                 'Usunięto produkt o id:' => $product->id
-            ]);
-        } else if ($userId != $product->user_id) {
+            ],
+            204); 
+         }else if ($userId!=$product->user_id){
             return response()->json([
                 'Nie mozna usunac nie swojego produktu'
-            ]);
-        } else {
-            $product->delete();
-            return response()->json([
-                'Usunięto produkt o id:' => $product->id
-            ]);
+            ],
+            204);
         }
+        else
+        {
+        $product->delete();
+        return response()->json([
+            'Usunięto produkt o id:' => $product->id
+        ],
+    204); 
+    }
+
     }
     public function list()
     {

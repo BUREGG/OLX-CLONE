@@ -45,9 +45,9 @@ Route::get('/', [CategoryController::class, 'getCategory'])->name("homepage");
 Route::get('/product', [ProductController::class, 'DisplayAllProduct'])->name('product.display');
 Route::get('/productdetails/{id}', [ProductController::class, 'productDetails'])->name('productdetails');
 Route::get('category/{id}', [ProductController::class, 'category'])->name('category');
-
 Route::post('/addfavorite/{id}', [ProductController::class, "favorite"])->name("addfavorite");
 Route::post('/deletefavorite/{id}', [ProductController::class, "deletefavorite"])->name("deletefavorite");
+
 
 
 

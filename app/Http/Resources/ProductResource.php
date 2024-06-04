@@ -18,15 +18,15 @@ class ProductResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'price'=>$this->price,
-            'description' => $this->when($request->is('api/products*'),function(){
-                return $this->description;
-            }),
+            'description' => $this->description,
             'user_id' => $this->user_id,
             'category_id' => $this->category_id,
-            'refresh' => $this->refresh,
+            'refresh' => $this->refresh->format('Y-m-d H:i'),
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
-            'address' => $this->address
+            'address' => $this->address,
+            'created_at' => $this->created_at->format('Y-m-d H:i'),
+            'updated_at' => $this->updated_at->format('Y-m-d H:i')
         ];
         
     }
