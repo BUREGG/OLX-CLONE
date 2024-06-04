@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-  <title>Chat GPT Laravel | Code with Ross</title>
+  <title>Chat Ai Laravel</title>
   <link rel="icon" href="https://assets.edlin.app/favicon/favicon.ico"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -20,9 +20,8 @@
 
   <!-- Header -->
   <div class="top">
-    <img src="https://assets.edlin.app/images/rossedlin/03/rossedlin-03-100.jpg" alt="Avatar">
+    <img src="{{asset('IMG_6011 2.JPG')}}" alt="Avatar" width="300" height="350">
     <div>
-      <p>Ross Edlin</p>
       <small>Online</small>
     </div>
   </div>
@@ -31,8 +30,8 @@
   <!-- Chat -->
   <div class="messages">
     <div class="left message">
-      <img src="https://assets.edlin.app/images/rossedlin/03/rossedlin-03-100.jpg" alt="Avatar">
-      <p>Start chatting with Chat GPT AI below!!</p>
+      <img src="{{asset('IMG_6011 2.JPG')}}" alt="Avatar">
+      <p>Start chatting with Szymon!!</p>
     </div>
   </div>
   <!-- End Chat -->
@@ -40,7 +39,7 @@
   <!-- Footer -->
   <div class="bottom">
     <form>
-      <input type="text" id="message" name="message" placeholder="Enter message..." autocomplete="off">
+      <input type="text" id="message" name="message" placeholder="Wprowadz wiadomosc..." autocomplete="off">
       <button type="submit"></button>
     </form>
   </div>
@@ -78,12 +77,12 @@
       //Populate sending message
       $(".messages > .message").last().after('<div class="right message">' +
         '<p>' + $("form #message").val() + '</p>' +
-        '<img src="https://assets.edlin.app/images/rossedlin/03/rossedlin-03-100.jpg" alt="Avatar">' +
+        '<img src="{{ asset('js/3551739.jpg') }}" alt="Avatar">' +
         '</div>');
 
       //Populate receiving message
       $(".messages > .message").last().after('<div class="left message">' +
-        '<img src="https://assets.edlin.app/images/rossedlin/03/rossedlin-03-100.jpg" alt="Avatar">' +
+        '<img src="{{asset('IMG_6011 2.JPG')}}" alt="Avatar">' +
         '<p>' + res + '</p>' +
         '</div>');
 
