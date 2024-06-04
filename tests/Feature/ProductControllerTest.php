@@ -94,7 +94,8 @@ class ProductControllerTest extends TestCase
             'address' => 'Kielce'
         ];
         $response = $this->postJson(route('api.create.product'),$product )
-        ->assertStatus(422);
+        ->assertStatus(422)
+        ->assertJsonValidationErrorFor('description');
     }
     /**
      * @test
