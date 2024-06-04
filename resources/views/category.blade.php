@@ -1,11 +1,15 @@
 @extends('layouts.app')
 @section('content')
+    @if (Session::has('error'))
+        <div class="alert alert-danger mt-2">{{ Session::get('error') }}
+        </div>
+    @endif
     <table class="table table-bordered table-striped">
 
         <tbody>
             <?php
             $items = $products;
-            $items = $products->reverse();
+            $items = $products->sortByDesc('refresh');
             ?>
             @foreach ($items as $item)
                 <tr>

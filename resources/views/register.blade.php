@@ -6,10 +6,12 @@
             height: 200px;
         }
     </style>
+    <script async src="https://www.google.com/recaptcha/api.js"></script>
+
     <div class="spacer"></div>
+   
 
-
-    <form method="POST" action="{{ route('register.post') }}">
+    <form method="POST" action="{{ route('register.post') }}" autocomplete="off">
         @csrf
         <div class="mb-3">
             @if (session()->has('success'))
@@ -23,8 +25,7 @@
                 </div>
             @endif
             <label for="exampleInputEmail1" class="form-label">Nazwa</label>
-            <input type="text" class="form-control" id="name" aria-describedby="NameHelp" name="name" autofocus
-                required>
+            <input type="text" class="form-control" id="name" aria-describedby="NameHelp" name="name" autofocus required>
             <label for="exampleInputEmail1" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" required>
         </div>
@@ -36,6 +37,7 @@
             <label for="exampleInputPassword1" class="form-label">Telefon</label>
             <input type="phone_number" class="form-control" id="phone_number" name="phone_number" required>
         </div>
+        <div class="g-recaptcha mt-4" data-sitekey={{config('services.recaptcha.key')}}></div>
 
         <button type="submit" action="POST" class="btn btn-primary">Zarejestruj</button>
 

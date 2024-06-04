@@ -12,7 +12,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
-    protected $fillable = ['name', 'description', 'price', 'image', 'location', 'favorite', 'refresh'];
+    protected $casts = [ 'refresh' => 'datetime'];    
+    protected $fillable = ['name', 'description', 'price', 'image', 'location', 'favorite', 'refresh','user_id', 'category_id', 'latitude', 'longitude', 'address'];
     use HasFactory;
     public function category() : BelongsTo
     {

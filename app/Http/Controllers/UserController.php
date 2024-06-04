@@ -64,6 +64,7 @@ class UserController extends Controller
         ]);
 
         $user->syncRoles($request->roles);
+        
 
         return redirect('/users')->with('status', 'User created successfully with roles');
     }
@@ -106,10 +107,9 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        if ($user->name === 'Super Admin') {
-            return redirect('/users')->with('status', 'no possible');
-        } else {
-            $user->delete();
+        if($user->hasRole('super-admin'))
+        {
+            return redirect('/users')->with('status','no possible');
 
             return redirect('/users')->with('status', 'User Delete Successfully');
         }

@@ -12,7 +12,10 @@
     </style>
     <div class="spacer"></div>
 
-
+    @if (Session::has('error'))
+        <div class="alert alert-danger mt-2">{{ Session::get('error') }}
+        </div>
+    @endif
     <form method="POST" action="{{ route('login.post') }}">
         @csrf
         <div class="mb-3">
@@ -45,4 +48,7 @@
     </form>
     {{-- <button type="submit" class="btn btn-primary" href={{url('/auth/google/redirect')}}>google</button>  --}}
     <a href={{ url('auth/redirect') }}>Zaloguj za pomocą google</a>
+    <div style="margin-top:10px">
+        <a href={{ url('forgot-password') }}>Nie pamiętasz hasła ? Zresetuj je!</a>
+    </div>
 @endsection

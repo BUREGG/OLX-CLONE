@@ -45,9 +45,10 @@ Route::get('/', [CategoryController::class, 'getCategory'])->name("homepage");
 Route::get('/product', [ProductController::class, 'DisplayAllProduct'])->name('product.display');
 Route::get('/productdetails/{id}', [ProductController::class, 'productDetails'])->name('productdetails');
 Route::get('category/{id}', [ProductController::class, 'category'])->name('category');
-
 Route::post('/addfavorite/{id}', [ProductController::class, "favorite"])->name("addfavorite");
 Route::post('/deletefavorite/{id}', [ProductController::class, "deletefavorite"])->name("deletefavorite");
+
+
 
 
 
@@ -72,3 +73,9 @@ Route::get('/auth/redirect', [GoogleAuthController::class, 'redirect'])->name('g
 Route::get('/auth/callback', [GoogleAuthController::class, 'callback'])->name('google.back');
 
 Route::get('/test', [ProductController::class, 'test']);
+
+
+Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('password.request');
+Route::post('/forgot-password', [AuthController::class, 'forgotPasswordPost'])->name('password.post');
+Route::get('/reset-password/{token}', [AuthController::class, 'resetPassword'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'resetPasswordPost'])->name('password.resetpost');

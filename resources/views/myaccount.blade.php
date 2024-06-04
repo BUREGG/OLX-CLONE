@@ -1,5 +1,9 @@
 @extends('layouts.app')
 @section('content')
+    @if (Session::has('error'))
+        <div class="alert alert-danger mt-2">{{ Session::get('error') }}
+        </div>
+    @endif
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -31,14 +35,15 @@
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger mx-2">Usun</button>
                             </form>
-                            <a href="{{ url('/editproduct/'.$item->id) }}" class="btn btn-success mx-2" style=margin-top:10px>Edytuj</a>
-                            <form action="{{ route('product.refresh', [$item->id]) }}" method="POST" style="margin-top:10px">
+                            <a href="{{ url('/editproduct/' . $item->id) }}" class="btn btn-success mx-2"
+                                style=margin-top:10px>Edytuj</a>
+                            <form action="{{ route('product.refresh', [$item->id]) }}" method="POST"
+                                style="margin-top:10px">
                                 @csrf
                                 @method('PUT')
                                 <button type="submit" class="btn btn-success mx-2">Odśwież</button>
                             </form>
                         </td>
-                        
                 @endif
             @endforeach
         </tbody>

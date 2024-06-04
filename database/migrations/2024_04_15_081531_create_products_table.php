@@ -16,13 +16,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->integer('price');
-            $table->string('latitude')->nullable();
-            $table->string('longitude')->nullable();
-          //  $table->boolean('favorite')->default(false);
-            $table->date('refresh')->format('Y-m-d H:i:s')->nullable();
+            $table->float('latitude')->nullable();
+            $table->float('longitude')->nullable();
+            $table->timestamp('refresh')->format('Y-m-d H:i:s')->nullable();
             $table->string('address')->nullable();
             $table->timestamps();
-         //   $table->string('image')->nullable();
             $table->foreignId('user_id')->constrained()->onUpdate('CASCADE')->onDelete('CASCADE')->nullable();
             $table->foreignId('category_id')->constrained()->onUpdate('CASCADE')->onDelete('CASCADE')->nullable();
 
