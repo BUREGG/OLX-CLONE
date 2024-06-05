@@ -174,7 +174,6 @@ class ProductController extends Controller
 
         return redirect('myaccount')->with('status', 'Ogłoszenie odświeżone');
     }
-
     public function search(Request $request)
     {
         $search = $request->input('search');
