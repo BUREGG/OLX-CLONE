@@ -82,31 +82,7 @@
                             </form>
                         @endif
                         @endif
-                    </td>
-                    <td style="vertical-align: bottom;">Dodano: {{ $item->refresh->format('Y-m-d H:i') }} Lokalizacja:
-                        {{ $item->address }}
-                        <td>
-                            @if (auth()->check())
-                                @php
-                                    $is_favorite = $item->product_users
-                                        ->where('user_id', Auth::user()->id)
-                                        ->contains('product_id', $item->id);
-                                @endphp
-
-                                @if ($is_favorite)
-                                    <form action="{{ route('deletefavorite', ['id' => $item->id]) }}" method="POST">
-                                        @csrf
-                                        <button type="submit">Usuń z ulubionych</button>
-                                    </form>
-                                @else
-                                    <form action="{{ route('addfavorite', ['id' => $item->id]) }}" method="POST">
-                                        @csrf
-                                        <button type="submit">Dodaj do ulubionych</button>
-                                    </form>
-                                @endif
-                            @endif
-                        </td>
-                     
+                    </td>            
             @endforeach
 
         </tbody>

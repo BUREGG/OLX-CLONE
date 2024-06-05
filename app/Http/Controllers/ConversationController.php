@@ -82,9 +82,7 @@ class ConversationController extends Controller
             $conversation = Conversation::create();
     
             $conversation->users()->attach([Auth::id(), $receiver]);
-    
             $conversation->products()->attach($id);
-            $conversation->name = $product->title;
             $conversation->save();
         }
 
