@@ -36,10 +36,10 @@ Route::middleware("auth")->group(function () {
     Route::post('/addproduct', [ProductController::class, "store"])->name("addproduct");
     Route::get('/favorite', [ProductController::class, "myfavorite"])->name("myfavorite");
     Route::delete('/delete/{product}',[ProductController::class, "destroy"])->name("product.delete");
-    Route::get('/editproduct/{id}',[ProductController::class, "edit"])->name("product.edit");
-    Route::put('/updateproduct/{id}',[ProductController::class, "update"])->name("product.update");
-    Route::put('/refresh/{id}',[ProductController::class, "refresh"])->name("product.refresh");
-    Route::put('status/{id}', [ProductController::class, "status"])->name('product.status');
+    Route::get('/editproduct/{product}',[ProductController::class, "edit"])->name("product.edit");
+    Route::put('/updateproduct/{product}',[ProductController::class, "update"])->name("product.update");
+    Route::put('/refresh/{product}',[ProductController::class, "refresh"])->name("product.refresh");
+    Route::put('status/{product}', [ProductController::class, "status"])->name('product.status');
     Route::get('editprofile', [App\Http\Controllers\UserController::class, "editprofile"])->name('editprofile');
     Route::put('editprofilepost', [App\Http\Controllers\UserController::class, "editprofilepost"])->name('editprofile.post');
     Route::get('chart', [ChartController::class, "chart"])->name('chart');

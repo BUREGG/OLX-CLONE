@@ -5,6 +5,7 @@ namespace App\Models;
 use Abbasudo\Purity\Traits\Filterable;
 use Abbasudo\Purity\Traits\Sortable;
 use Attribute as GlobalAttribute;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -36,6 +37,10 @@ class Product extends Model
     public function product_users() : HasMany
     {
         return $this->hasMany(ProductUser::class);
+    }
+    public function scopeFilter(Builder $query)
+    {
+        return $query;
     }
 
 }
