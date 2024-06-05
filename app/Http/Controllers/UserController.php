@@ -115,13 +115,13 @@ class UserController extends Controller
             return redirect('/users')->with('status', 'User Delete Successfully');
         }
     }
-    public function editprofile()
+    public function editProfile()
     {
         $id = Auth::id();
         $user = User::where('id', $id)->get();
         return view('editprofile', ['user'=>$user]);
     }
-    public function editprofilepost(Request $request, User $user)
+    public function editProfilePost(Request $request, User $user)
     {
 
         $request->validate([

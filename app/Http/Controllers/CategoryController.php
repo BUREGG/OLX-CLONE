@@ -12,6 +12,9 @@ class CategoryController extends Controller
    {
       $products = Product::orderBy('views', 'desc')->take(3)->get();
       $categories = Category::root()->get();
-      return view('welcome', ['categories' => $categories],['products' => $products]);
+      return view('welcome', [
+         'categories' => $categories,
+         'products' => $products
+   ]);
    }
 }

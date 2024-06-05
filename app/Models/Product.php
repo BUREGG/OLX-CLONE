@@ -38,9 +38,4 @@ class Product extends Model
     {
         return $this->hasMany(ProductUser::class);
     }
-    public function scopeFilter(Builder $query)
-    {
-        return $query;
-    }
-
 }

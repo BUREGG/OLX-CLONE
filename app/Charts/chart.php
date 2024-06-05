@@ -2,7 +2,7 @@
 
 namespace App\Charts;
 
-class chart extends Chart
+class Chart extends Chart
 {
     /**
      * Initializes the chart.

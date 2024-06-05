@@ -18,7 +18,7 @@ use Illuminate\Pagination\Paginator;
 
 class ProductController extends Controller
 {
-    public function DisplayAllProduct()
+    public function displayAllProduct()
     {
         $products = Product::where('is_active', true)->with('images', 'product_users')->get();
         return view('product', ['products' => $products]);
@@ -32,13 +32,13 @@ class ProductController extends Controller
         return view('category', ['products' => $products]);
     }
 
-    public function myproducts()
+    public function myProducts()
     {
         $products = Product::with('images')->get();
         return view('myaccount', ['products' => $products],);
     }
 
-    public function myfavorite()
+    public function myFavorite()
     {
         $products = Product::where('is_active',true)->with('images')->get();
         return view('favorite', ['products' => $products],);
@@ -46,8 +46,7 @@ class ProductController extends Controller
 
     public function productDetails($id)
     {
-        $product = Product::where('id', $id)->with('user')->firstOrFail();
-        $product->load('images');
+        $product = Product::where('id', $id)->with(['user','images'])->firstOrFail();
         $product->increment('views');
         return view('productdetails', ['product' => $product]);
     }
@@ -60,7 +59,7 @@ class ProductController extends Controller
         return redirect()->back();
     }
 
-    public function deletefavorite($id)
+    public function deleteFavorite($id)
     {
         $product = ProductUser::where('user_id', Auth::user()->id)->where('product_id', $id)->first();
         if ($product) {
@@ -178,7 +177,7 @@ class ProductController extends Controller
 
     public function filtr(Request $request)
     {
-        $products = Product::filter()
+        $products = Product::query()
             ->when($request->filled('lowestprice') && $request->filled('highestprice'), function ($query) use ($request) {
                 return $query->whereBetween('price', [$request->lowestprice, $request->highestprice]);
             })
@@ -189,7 +188,7 @@ class ProductController extends Controller
 
     public function filtrCategory(Request $request, $id)
     {
-        $products = Product::filter()->where('category_id', $id)
+        $products = Product::query()->where('category_id', $id)
             ->when($request->filled('lowestprice') && $request->filled('highestprice'), function ($query) use ($request) {
                 return $query->whereBetween('price', [$request->lowestprice, $request->highestprice]);
             })
@@ -204,9 +203,9 @@ class ProductController extends Controller
 
         return view('search', ['products' => $products]);
     }
-    public function searchfiltr(Request $request)
+    public function searchFiltr(Request $request)
     {
-        $products = Product::filter()
+        $products = Product::query()
             ->when($request->filled('lowestprice') && $request->filled('highestprice'), function ($query) use ($request) {
                 return $query->whereBetween('price', [$request->lowestprice, $request->highestprice]);
             })
