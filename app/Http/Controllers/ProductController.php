@@ -181,7 +181,7 @@ class ProductController extends Controller
             ->when($request->filled('lowestprice') && $request->filled('highestprice'), function ($query) use ($request) {
                 return $query->whereBetween('price', [$request->lowestprice, $request->highestprice]);
             })
-            ->with('images', 'product_users')
+            ->with('images')
             ->get();
         return view('product', ['products' => $products]);
     }
@@ -192,7 +192,7 @@ class ProductController extends Controller
             ->when($request->filled('lowestprice') && $request->filled('highestprice'), function ($query) use ($request) {
                 return $query->whereBetween('price', [$request->lowestprice, $request->highestprice]);
             })
-            ->with('images', 'product_users')
+            ->with('images')
             ->get();
         return view('category', ['products' => $products, 'id' => $id]);
     }
@@ -209,7 +209,7 @@ class ProductController extends Controller
             ->when($request->filled('lowestprice') && $request->filled('highestprice'), function ($query) use ($request) {
                 return $query->whereBetween('price', [$request->lowestprice, $request->highestprice]);
             })
-            ->with('images', 'product_users')
+            ->with('images')
             ->get();
         return view('search', ['products' => $products]);
     }
