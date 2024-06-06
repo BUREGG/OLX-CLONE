@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -51,10 +52,9 @@ class UserController extends Controller
                 'min:8',
                 'max:20'
             ],
-            'roles.*' => [
-                'required',
-                Rule::exists('roles', 'name')
-            ],
+            'roles' => [
+                'required'
+            ]
         ]);
 
         $user = User::create([
@@ -64,7 +64,7 @@ class UserController extends Controller
         ]);
 
         $user->syncRoles($request->roles);
-        
+
 
         return redirect('/users')->with('status', 'User created successfully with roles');
     }
@@ -107,11 +107,37 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        if($user->hasRole('super-admin'))
-        {
-            return redirect('/users')->with('status','no possible');
+        if ($user->hasRole('super-admin')) {
+            return redirect('/users')->with('status', 'no possible');
+        } else {
+            $user->delete();
 
             return redirect('/users')->with('status', 'User Delete Successfully');
         }
+    }
+    public function editProfile()
+    {
+        $id = Auth::id();
+        $user = User::where('id', $id)->get();
+        return view('editprofile', ['user'=>$user]);
+    }
+    public function editProfilePost(Request $request, User $user)
+    {
+
+        $request->validate([
+            'name' => [
+                'required',
+                'string',
+                'max:255'
+            ],
+            'phone_number' => [
+                'required',
+                'digits:9'
+            ]
+        ]);
+        $id = Auth::id();
+        User::where('id', $id)->first()->update($request->all());
+        return redirect('/myaccount')->with('status', 'Sukces');
+
     }
 }

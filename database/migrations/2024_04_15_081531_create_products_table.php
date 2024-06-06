@@ -21,6 +21,8 @@ return new class extends Migration
             $table->timestamp('refresh')->format('Y-m-d H:i:s')->nullable();
             $table->string('address')->nullable();
             $table->timestamps();
+            $table->boolean('is_active')->default(true);
+            $table->integer('views')->default(0);
             $table->foreignId('user_id')->constrained()->onUpdate('CASCADE')->onDelete('CASCADE')->nullable();
             $table->foreignId('category_id')->constrained()->onUpdate('CASCADE')->onDelete('CASCADE')->nullable();
 

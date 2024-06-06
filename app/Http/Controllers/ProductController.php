@@ -14,12 +14,13 @@ use App\Services\GeoCodeService;
 use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Pagination\Paginator;
 
 class ProductController extends Controller
 {
-    public function DisplayAllProduct()
+    public function displayAllProduct()
     {
-        $products = Product::with('images', 'product_users')->get();
+        $products = Product::where('is_active', true)->with('images', 'product_users')->get();
         return view('product', ['products' => $products]);
     }
     public function category($id)
@@ -27,27 +28,26 @@ class ProductController extends Controller
         $category = Category::where('id', $id)->with('children')->firstOrFail();
         $categoryId = $category->children->pluck('id')->toArray();
         $categoryId[] = $category->id;
-        $products = Product::whereIn('category_id', $categoryId)->get();
-
+        $products = Product::whereIn('category_id', $categoryId)->where('is_active', true)->get();
         return view('category', ['products' => $products]);
     }
 
-    public function myproducts()
+    public function myProducts()
     {
         $products = Product::with('images')->get();
         return view('myaccount', ['products' => $products],);
     }
-    public function myfavorite()
+
+    public function myFavorite()
     {
-        $products = Product::all();
-        $products->load('images');
+        $products = Product::where('is_active',true)->with('images')->get();
         return view('favorite', ['products' => $products],);
     }
 
     public function productDetails($id)
     {
-        $product = Product::where('id', $id)->with('user')->firstOrFail();
-        $product->load('images');
+        $product = Product::where('id', $id)->with(['user','images'])->firstOrFail();
+        $product->increment('views');
         return view('productdetails', ['product' => $product]);
     }
 
@@ -56,15 +56,24 @@ class ProductController extends Controller
         $product = Product::where('id', $id)->firstOrFail();
         $user_id = auth()->id();
         ProductUser::firstOrCreate(['product_id' => $product->id, 'user_id' => $user_id]);
-        return redirect('/product');
+        return redirect()->back();
     }
-    public function deletefavorite($id)
+
+    public function deleteFavorite($id)
     {
         $product = ProductUser::where('user_id', Auth::user()->id)->where('product_id', $id)->first();
         if ($product) {
             $product->delete();
         }
         return redirect()->back();
+    }
+    public function status($id)
+    {
+        $product = Product::where('id', $id)->firstOrFail();
+        $product->is_active = !$product->is_active;
+        $product->update();
+
+        return redirect()->back()->with('status', 'product status updated!');
     }
 
     public function store(Request $request, GeoCodeService $geoCodeService)
@@ -107,9 +116,6 @@ class ProductController extends Controller
         return redirect('myaccount');
     }
 
-
-
-
     public function show(string $id)
     {
     }
@@ -119,7 +125,7 @@ class ProductController extends Controller
     {
         return view('editproduct', [
             'product' => $product
-           
+
         ]);
     }
 
@@ -152,10 +158,7 @@ class ProductController extends Controller
 
         
         return redirect('myaccount')->with('status', 'ogłoszenie zaktualizowane');
-
-
     }
-
 
     public function destroy(Product $product)
     {
@@ -166,10 +169,48 @@ class ProductController extends Controller
 
     public function refresh(Product $product){
         $formattedDateTime = Carbon::now()->format('Y-m-d H:i:s');
-        
-        $product->update(['refresh' => $formattedDateTime]);
-    
-        return redirect('myaccount')->with('status', 'Ogłoszenie odświeżone');
 
+        $product->update(['refresh' => $formattedDateTime]);
+
+        return redirect('myaccount')->with('status', 'Ogłoszenie odświeżone');
+    }
+
+    public function filtr(Request $request)
+    {
+        $products = Product::query()
+            ->when($request->filled('lowestprice') && $request->filled('highestprice'), function ($query) use ($request) {
+                return $query->whereBetween('price', [$request->lowestprice, $request->highestprice]);
+            })
+            ->with('images')
+            ->get();
+        return view('product', ['products' => $products]);
+    }
+
+    public function filtrCategory(Request $request, $id)
+    {
+        $products = Product::query()->where('category_id', $id)
+            ->when($request->filled('lowestprice') && $request->filled('highestprice'), function ($query) use ($request) {
+                return $query->whereBetween('price', [$request->lowestprice, $request->highestprice]);
+            })
+            ->with('images')
+            ->get();
+        return view('category', ['products' => $products, 'id' => $id]);
+    }
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        $products = Product::where('name', 'like', "%$search%")->get();
+
+        return view('search', ['products' => $products]);
+    }
+    public function searchFiltr(Request $request)
+    {
+        $products = Product::query()
+            ->when($request->filled('lowestprice') && $request->filled('highestprice'), function ($query) use ($request) {
+                return $query->whereBetween('price', [$request->lowestprice, $request->highestprice]);
+            })
+            ->with('images')
+            ->get();
+        return view('search', ['products' => $products]);
     }
 }

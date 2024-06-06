@@ -4,6 +4,9 @@
         <div class="alert alert-danger mt-2">{{ Session::get('error') }}
         </div>
     @endif
+    <a href="{{ url('/editprofile') }}" class="btn btn-primary" style="margin-top: 50px">Edytuj profil</a>
+    <a href="{{ url('/chart') }}" class="btn btn-primary" style="margin-top: 50px">Statystyki</a>
+    <h1 style="  text-align: center; margin-top:100px">Moje ogłoszenia</h1>
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -20,7 +23,7 @@
                     <tr>
                         <td>{{ $item->id }}</td>
                         <td>{{ $item->name }}</td>
-                        <td>{{ $item->description }}</td>
+                        <td>{!! $item->description !!}</td>
                         <td>{{ $item->price }}</td>
                         <td>
 
@@ -43,6 +46,16 @@
                                 @method('PUT')
                                 <button type="submit" class="btn btn-success mx-2">Odśwież</button>
                             </form>
+                        </td>
+                        <td>
+                            <form action="{{ route('product.status', $item->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="btn {{ $item->is_active ? 'btn-danger' : 'btn-success' }}">
+                                    {{ $item->is_active ? 'Dezaktywuj' : 'Aktywuj' }}
+                                </button>
+                            </form>
+                            
                         </td>
                 @endif
             @endforeach

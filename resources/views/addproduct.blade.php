@@ -3,6 +3,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
@@ -11,6 +12,14 @@
         <div class="alert alert-danger mt-2">{{ Session::get('error') }}
         </div>
     @endif
+     <!-- include libraries(jQuery, bootstrap) -->
+     {{-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet"> --}}
+     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+ 
+     <!-- include summernote css/js -->
+     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -25,7 +34,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="description" class="form-label">Opis</label>
-                                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                                <textarea class="form-control" id="description" name="description" rows="10" required></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="price" class="form-label">Cena</label>
@@ -55,6 +64,15 @@
                                 <input type="hidden" name="longitude" id="longitude">
                             </div>
                             <script>
+                                $('#description').summernote({
+                                    placeholder: 'description...',
+                                    tabsize:2,
+                                    height:300
+                                });
+                            </script>
+                            
+                            <script>
+                             
                                 var map = L.map('map').setView([51.7592, 19.4554], 13);
 
                                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

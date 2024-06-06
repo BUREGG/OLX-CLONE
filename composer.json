@@ -6,13 +6,18 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "abbasudo/laravel-purity": "^3.3",
+        "consoletvs/charts": "6.*",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
         "laravel/jetstream": "^4.3",
         "laravel/passport": "^12.2",
+        "laravel/reverb": "@beta",
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.13",
         "laravel/tinker": "^2.8",
+        "laraveldaily/laravel-charts": "^0.2.3",
+        "pusher/pusher-php-server": "^7.2",
         "spatie/laravel-permission": "^6.4",
         "spatie/laravel-sluggable": "^3.6"
     },
