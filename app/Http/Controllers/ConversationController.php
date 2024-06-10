@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Spatie\LaravelIgnition\FlareMiddleware\AddJobs;
 
-class ConversationController extends Controller
+class ConversationController extends AbstractCommunicationController
 {
     public function index()
     {
@@ -26,12 +26,6 @@ class ConversationController extends Controller
         $messages = $conversation->messages()->with('sender')->orderBy('created_at', 'asc')->get();
 
         return view('conversations.show', compact('conversation', 'messages'));
-    }
-    private function authorizeConversationAccess(Conversation $conversation)
-    {
-        if (!$conversation->users->contains(Auth::id())) {
-            abort(403, 'Unauthorized access to this conversation.');
-        }
     }
     public function store($id)
     {
