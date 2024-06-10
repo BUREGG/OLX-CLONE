@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attributes', function (Blueprint $table) {
+        Schema::create('messages', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('conversation_id')->constrained()->onDelete('CASCADE');
+            $table->text('content');
+            $table->foreignId('sender_id')->constrained()->onDelete('CASCADE');
             $table->timestamps();
-            $table->string('attribute_name');
-            $table->string('attribute_value');
-            $table->foreignId('product_id')->constrained()->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attributes');
+        Schema::dropIfExists('messages');
     }
 };

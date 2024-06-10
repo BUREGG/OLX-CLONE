@@ -70,20 +70,19 @@
                                         ->contains('product_id', $item->id);
                                 @endphp
 
-                                @if ($is_favorite)
-                                    <form action="{{ route('deletefavorite', ['id' => $item->id]) }}" method="POST">
-                                        @csrf
-                                        <button type="submit">Usuń z ulubionych</button>
-                                    </form>
-                                @else
-                                    <form action="{{ route('addfavorite', ['id' => $item->id]) }}" method="POST">
-                                        @csrf
-                                        <button type="submit">Dodaj do ulubionych</button>
-                                    </form>
-                                @endif
-                            @endif
-                        </td>
-                     
+                        @if ($is_favorite)
+                            <form action="{{ route('deletefavorite', ['id' => $item->id]) }}" method="POST">
+                                @csrf
+                                <button type="submit">Usuń z ulubionych</button>
+                            </form>
+                        @else
+                            <form action="{{ route('addfavorite', ['id' => $item->id]) }}" method="POST">
+                                @csrf
+                                <button type="submit">Dodaj do ulubionych</button>
+                            </form>
+                        @endif
+                        @endif
+                    </td>            
             @endforeach
 
         </tbody>

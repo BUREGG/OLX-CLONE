@@ -175,27 +175,6 @@ class ProductController extends Controller
         return redirect('myaccount')->with('status', 'Ogłoszenie odświeżone');
     }
 
-    public function filtr(Request $request)
-    {
-        $products = Product::query()
-            ->when($request->filled('lowestprice') && $request->filled('highestprice'), function ($query) use ($request) {
-                return $query->whereBetween('price', [$request->lowestprice, $request->highestprice]);
-            })
-            ->with('images')
-            ->get();
-        return view('product', ['products' => $products]);
-    }
-
-    public function filtrCategory(Request $request, $id)
-    {
-        $products = Product::query()->where('category_id', $id)
-            ->when($request->filled('lowestprice') && $request->filled('highestprice'), function ($query) use ($request) {
-                return $query->whereBetween('price', [$request->lowestprice, $request->highestprice]);
-            })
-            ->with('images')
-            ->get();
-        return view('category', ['products' => $products, 'id' => $id]);
-    }
     public function search(Request $request)
     {
         $search = $request->input('search');
@@ -213,4 +192,26 @@ class ProductController extends Controller
             ->get();
         return view('search', ['products' => $products]);
     }
+
+    public function filtr(Request $request)
+    {
+        $products = Product::filter()
+            ->when($request->filled('lowestprice') && $request->filled('highestprice'), function ($query) use ($request) {
+                return $query->whereBetween('price', [$request->lowestprice, $request->highestprice]);
+            })
+            ->with(['images', 'product_users'])
+            ->get();
+        return view('product', ['products' => $products]);
+    }
+
+    public function filtrCategory(Request $request, $id)
+    {
+        $products = Product::filter()->where('category_id', $id)
+            ->when($request->filled('lowestprice') && $request->filled('highestprice'), function ($query) use ($request) {
+                return $query->whereBetween('price', [$request->lowestprice, $request->highestprice]);
+            })
+            ->with(['images', 'product_users'])
+            ->get();
+            return view('category', ['products' => $products,'id'=>$id]);
+        }
 }

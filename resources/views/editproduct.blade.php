@@ -24,7 +24,7 @@
         </div>
         <div class="mb-3">
             <label for="">Opis</label>
-            <textarea class="form-control" id="description" name="description" rows="10" required></textarea>
+            <input type="text" name="description" value="{{ $product->description }}" class="form-control" />
         </div>
         <div class="mb-3">
             <label for="">Cena</label>

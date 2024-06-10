@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\Message;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GetCategoryController;
 use App\Http\Controllers\ProductController;
@@ -7,14 +8,19 @@ use App\Http\Controllers\AllproductController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChartController;
+use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\GeoCodeController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PusherController;
 use App\Models\Product;
 use App\Models\ProductUser;
 use App\Models\User;
+use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +49,19 @@ Route::middleware("auth")->group(function () {
     Route::get('editprofile', [App\Http\Controllers\UserController::class, "editProfile"])->name('editprofile');
     Route::put('editprofilepost', [App\Http\Controllers\UserController::class, "editProfilePost"])->name('editprofile.post');
     Route::get('chart', [ChartController::class, "chart"])->name('chart');
+    Route::get('/editproduct/{id}',[ProductController::class, "edit"])->name("product.edit");
+    Route::put('/updateproduct/{id}',[ProductController::class, "update"])->name("product.update");
+    Route::put('/refresh/{id}',[ProductController::class, "refresh"])->name("product.refresh");
+    Route::put('status/{id}', [ProductController::class, "status"])->name('product.status');
+    Route::get('editprofile', [App\Http\Controllers\UserController::class, "editprofile"])->name('editprofile');
+    Route::put('editprofilepost', [App\Http\Controllers\UserController::class, "editprofilepost"])->name('editprofile.post');
+    Route::get('chart', [ChartController::class, "chart"])->name('chart');
+
+Route::get('/conversations', [ConversationController::class, 'index'])->name('conversations.index');
+Route::get('/conversations/{conversation}', [ConversationController::class, 'show'])->name('conversations.show');
+Route::post('/conversations/{conversation}/messages', [MessageController::class, 'store'])->name('messages.store');
+Route::post('/conversations', [ConversationController::class, 'create'])->name('conversations.create');
+Route::get('/conversations/start/{id}', [ConversationController::class, 'store'])->name('conversations.start');
 
 });
 Route::get('/', [CategoryController::class, 'getCategory'])->name("homepage");
@@ -55,8 +74,6 @@ Route::post('/addfavorite/{id}', [ProductController::class, "favorite"])->name("
 Route::post('/deletefavorite/{id}', [ProductController::class, "deleteFavorite"])->name("deletefavorite");
 Route::get('/search', [ProductController::class, 'search'])->name('products.search');
 Route::get('/filteredsearch', [ProductController::class, 'searchFiltr'])->name('products.searchfiltr');
-
-
 
 
 

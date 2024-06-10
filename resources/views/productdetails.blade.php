@@ -57,6 +57,8 @@
             <a>Wyświetleń:{{$product->views}}</a>
 
         </div>
-
+        @if(Auth::user()->id!=$product->user_id)
+        <a href="{{ route('conversations.start', ['id' => $product->id]) }}">Napisz wiadomość</a>
+        @endif
     </body>
     @endsection
