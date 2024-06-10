@@ -56,21 +56,12 @@ Route::middleware("auth")->group(function () {
     Route::get('editprofile', [App\Http\Controllers\UserController::class, "editprofile"])->name('editprofile');
     Route::put('editprofilepost', [App\Http\Controllers\UserController::class, "editprofilepost"])->name('editprofile.post');
     Route::get('chart', [ChartController::class, "chart"])->name('chart');
-    Route::get('/chat', [PusherController::class, "index"])->name('chat');
-    Route::post('/broadcast', [PusherController::class, "broadcast"])->name('broadcast');
-    Route::post('/receive', [PusherController::class, "receive"])->name('receive');
-    Route::post('send-message',function (Request $request){
-        event(new Message($request->username, $request->message));
-        return ['success' => true];
-    })->name('send-message');
-    Route::get('/testchat', function () {
-        return view('testchat');
-    });
+
 Route::get('/conversations', [ConversationController::class, 'index'])->name('conversations.index');
 Route::get('/conversations/{conversation}', [ConversationController::class, 'show'])->name('conversations.show');
-Route::post('/conversations/{conversation}/messages', [ConversationController::class, 'storeMessage'])->name('messages.store');
+Route::post('/conversations/{conversation}/messages', [MessageController::class, 'store'])->name('messages.store');
 Route::post('/conversations', [ConversationController::class, 'create'])->name('conversations.create');
-Route::get('/conversations/start/{id}', [ConversationController::class, 'start'])->name('conversations.start');
+Route::get('/conversations/start/{id}', [ConversationController::class, 'store'])->name('conversations.start');
 
 });
 Route::get('/', [CategoryController::class, 'getCategory'])->name("homepage");

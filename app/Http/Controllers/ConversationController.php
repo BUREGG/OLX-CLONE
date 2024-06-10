@@ -27,66 +27,34 @@ class ConversationController extends Controller
 
         return view('conversations.show', compact('conversation', 'messages'));
     }
-
-    public function storeMessage(Request $request, Conversation $conversation)
-    {
-        $this->authorizeConversationAccess($conversation);
-
-        $request->validate([
-            'content' => 'required|string|max:1000',
-        ]);
-
-        $conversation->messages()->create([
-            'content' => $request->content,
-            'sender_id' => Auth::id(),
-        ]);
-
-        return redirect()->route('conversations.show', $conversation);
-    }
-
-    public function create(Request $request)
-    {
-        $request->validate([
-            'receiver_id' => 'required|exists:users,id',
-        ]);
-
-        $conversation = Conversation::create();
-        $conversation->users()->attach([Auth::id(), $request->receiver_id]);
-
-        return redirect()->route('conversations.show', $conversation);
-    }
-
     private function authorizeConversationAccess(Conversation $conversation)
     {
         if (!$conversation->users->contains(Auth::id())) {
             abort(403, 'Unauthorized access to this conversation.');
         }
     }
-    public function start($id)
+    public function store($id)
     {
         $product = Product::findOrFail($id);
-        $receiver = $product->user_id;
-        $conversation = Conversation::whereHas('users', function($query) use ($receiver) {
+        $conversation = Conversation::whereHas('users', function ($query) use ($product) {
             $query->where('user_id', Auth::id())
-                  ->orWhere('user_id', $receiver);
+                ->orWhere('user_id', $product->user_id);
         })->whereHas('messages', function ($query) use ($id) {
             $query->where('sender_id', Auth::id())
-                  ->whereHas('conversation', function ($q) use ($id) {
-                      $q->whereHas('products', function ($q) use ($id) {
-                          $q->where('products.id', $id); 
-                      });
-                  });
+                ->whereHas('conversation', function ($q) use ($id) {
+                    $q->whereHas('products', function ($q) use ($id) {
+                        $q->where('products.id', $id);
+                    });
+                });
         })->first();
-    
+
         if (!$conversation) {
             $conversation = Conversation::create();
-    
-            $conversation->users()->attach([Auth::id(), $receiver]);
+            $conversation->users()->attach([Auth::id(), $product->user_id]);
             $conversation->products()->attach($id);
             $conversation->save();
         }
 
         return redirect()->route('conversations.show', $conversation);
     }
-
 }

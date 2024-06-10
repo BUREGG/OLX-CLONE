@@ -18,8 +18,6 @@ return new class extends Migration
             $table->date('date');
             $table->string('status');
             $table->foreignId('product_id')->constrained()->onUpdate('CASCADE')->onDelete('CASCADE');
-          // $table->foreignId('products_users_id')->constrained()->onUpdate('CASCADE')->onDelete('CASCADE');
-          // $table->foreignId('products_categories_id')->constrained()->onUpdate('CASCADE')->onDelete('CASCADE');
 
         });
     }

@@ -13,11 +13,8 @@ return new class extends Migration
     {
         Schema::create('conversation_user', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('conversation_id');
-            $table->unsignedBigInteger('user_id');
-
-            $table->foreign('conversation_id')->references('id')->on('conversations')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('conversation_id')->constrained()->onDelete('CASCADE');
+            $table->foreignId('user_id')->constrained()->onDelete('CASCADE');
         });
     }
 
