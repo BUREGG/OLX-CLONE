@@ -79,8 +79,36 @@ class OrderConversation extends Conversation
             $response = $answer->getValue();
     
             if ($response === 'tak') {
-                // Tutaj możesz kontynuować konwersację, pytając użytkownika o preferowaną markę
-            } else {
+                $question = Question::create("Jaką markę preferujesz ?")
+                ->addButtons([
+                    Button::create('Audi')->value('audi'),
+                    Button::create('BMW')->value('bmw'),
+                    Button::create('Mazda')->value('mazda'),
+                    Button::create('Nissan')->value('nissan'),            
+                ]);
+                $this->ask($question, function ($answer) {
+                    $category = $answer->getValue();
+            
+                    switch ($category) {
+                        case 'audi':
+                            $this->say("Preferujesz markę audi");
+                            break;
+                        case 'bmw':
+                            $this->say("Preferujesz markę bmw");
+                            break;
+                        case 'mazda':
+                            $this->say("Preferujesz markę mazda");
+                            break;
+                        case 'nissan':
+                            $this->say("Preferujesz markę nissan");
+                            break;
+                        default:
+                            $this->say("Nie rozumiem tej kategorii. Spróbuj ponownie.");
+                            $this->askCategory();
+                            break;
+                        }
+                    });
+                }else {
                 $this->say("Nie masz preferencji co do marki.");
                 // Tutaj możesz kontynuować konwersację, pytając użytkownika o inne cechy produktu
             }

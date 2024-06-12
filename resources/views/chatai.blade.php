@@ -63,7 +63,7 @@
     $("form button").prop('disabled', true);
 
     $.ajax({
-      url: "/bot",
+      url: "/chatai",
       method: 'POST',
       headers: {
         'X-CSRF-TOKEN': "{{csrf_token()}}"

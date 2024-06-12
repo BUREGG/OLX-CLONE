@@ -60,6 +60,9 @@ Route::post('/conversations/{conversation}/messages', [MessageController::class,
 Route::post('/conversations', [ConversationController::class, 'create'])->name('conversations.create');
 Route::get('/conversations/start/{id}', [ConversationController::class, 'store'])->name('conversations.start');
 
+Route::get('/chatai', function () { return view('chatai');} );
+Route::post('/chatai', [ChatController::class ,"__invoke"]);
+
 });
 Route::get('/', [CategoryController::class, 'getCategory'])->name("homepage");
 Route::get('/product', [ProductController::class, 'displayAllProduct'])->name('product.display');

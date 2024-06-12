@@ -40,9 +40,4 @@ class ChatController extends Controller
             return "An error occurred: " . $e->getMessage();
         }
     }
-
-    public function bot()
-    {
-        return view('chatbot');
-    }
 }

@@ -6,7 +6,7 @@
 <script>
     var botmanWidget = {
 aboutText: 'Write Something',
-introMessage: "✋ Hi! I'm form eimpact.net"
+introMessage: 'Napisz "start" aby zacząć rozmowę'
 };
 </script>
 
