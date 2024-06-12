@@ -9,7 +9,7 @@ use Throwable;
 
 class ChatController extends Controller
 {
-    public function __invoke(Request $request): string
+    public function store(Request $request): string
     {
         try {
             $response = Http::withHeaders([
@@ -39,5 +39,9 @@ class ChatController extends Controller
             Log::error('Error in ChatController', ['exception' => $e]);
             return "An error occurred: " . $e->getMessage();
         }
+    }
+    public function show()
+    {
+        return view('chatai');
     }
 }
