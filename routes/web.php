@@ -1,14 +1,18 @@
 <?php
 
 use App\Events\Message;
+use App\Charts\chart;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GetCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AllproductController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\BotController;
+use App\Http\Controllers\BotManController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\GeoCodeController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\MessageController;
@@ -49,19 +53,15 @@ Route::middleware("auth")->group(function () {
     Route::get('editprofile', [App\Http\Controllers\UserController::class, "editProfile"])->name('editprofile');
     Route::put('editprofilepost', [App\Http\Controllers\UserController::class, "editProfilePost"])->name('editprofile.post');
     Route::get('chart', [ChartController::class, "chart"])->name('chart');
-    Route::get('/editproduct/{id}',[ProductController::class, "edit"])->name("product.edit");
-    Route::put('/updateproduct/{id}',[ProductController::class, "update"])->name("product.update");
-    Route::put('/refresh/{id}',[ProductController::class, "refresh"])->name("product.refresh");
-    Route::put('status/{id}', [ProductController::class, "status"])->name('product.status');
-    Route::get('editprofile', [App\Http\Controllers\UserController::class, "editprofile"])->name('editprofile');
-    Route::put('editprofilepost', [App\Http\Controllers\UserController::class, "editprofilepost"])->name('editprofile.post');
-    Route::get('chart', [ChartController::class, "chart"])->name('chart');
 
 Route::get('/conversations', [ConversationController::class, 'index'])->name('conversations.index');
 Route::get('/conversations/{conversation}', [ConversationController::class, 'show'])->name('conversations.show');
 Route::post('/conversations/{conversation}/messages', [MessageController::class, 'store'])->name('messages.store');
 Route::post('/conversations', [ConversationController::class, 'create'])->name('conversations.create');
 Route::get('/conversations/start/{id}', [ConversationController::class, 'store'])->name('conversations.start');
+
+Route::get('/chatai', [ChatController::class, "show"]);
+Route::post('/chatai', [ChatController::class ,"store"]);
 
 });
 Route::get('/', [CategoryController::class, 'getCategory'])->name("homepage");
@@ -103,3 +103,6 @@ Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name(
 Route::post('/forgot-password', [AuthController::class, 'forgotPasswordPost'])->name('password.post');
 Route::get('/reset-password/{token}', [AuthController::class, 'resetPassword'])->name('password.reset');
 Route::post('/reset-password', [AuthController::class, 'resetPasswordPost'])->name('password.resetpost');
+
+
+Route::match(['get', 'post'], '/botman', [BotManController::class, 'handle']);

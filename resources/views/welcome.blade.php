@@ -73,3 +73,4 @@
         }
     </style>
 @endsection
+@include('botman')
